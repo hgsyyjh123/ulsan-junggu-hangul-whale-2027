@@ -2,393 +2,533 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>데이터의 강을 유영하는 미디어아트 〈태화강 한글고래〉 및 12달 실증 복지기금 사업</title>
 <style>
-  :root {
-    --bg: #fbfcfe;
-    --ink-deep: #0b2239;
-    --ink-mid: #1d4e78;
-    --ink-soft: #6c8ea8;
-    --indigo: #005f99;
-    --teal: #0ca678;
-    --vermilion: #d9480f;
-    --gold-ink: #c97a00;
-    --glass: rgba(255, 255, 255, 0.86);
-    --border: rgba(15, 44, 76, 0.11);
-    --shadow: 0 12px 36px rgba(11, 34, 57, 0.08);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Pretendard', 'Malgun Gothic', '맑은 고딕', sans-serif;
-    background: var(--bg);
-    color: var(--ink-deep);
+  /* Android 7 (Chrome 51+ WebView) 100% 호환 CSS — inset·flex-gap·grid 미사용 폴백 완비 */
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    font-family: 'Pretendard', 'Noto Sans CJK KR', 'Noto Sans KR', 'Roboto', 'Malgun Gothic', '맑은 고딕', sans-serif;
+    background: #fbfcfe;
+    color: #0b2239;
     overflow: hidden;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    -webkit-user-select: none;
     user-select: none;
   }
 
   #whaleCanvas {
     position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; right: 0; bottom: 0; left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 1;
     cursor: crosshair;
+    touch-action: none;
   }
 
-  /* Minimalist Gallery Top Bar */
+  /* Top Header */
   .topbar {
     position: fixed;
-    top: 18px;
-    left: 24px;
-    right: 24px;
+    top: 14px;
+    left: 18px;
+    right: 18px;
     z-index: 15;
+    display: -webkit-flex;
     display: flex;
+    -webkit-align-items: center;
     align-items: center;
+    -webkit-justify-content: space-between;
     justify-content: space-between;
-    padding: 12px 22px;
-    background: var(--glass);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    backdrop-filter: blur(14px);
-    box-shadow: var(--shadow);
+    padding: 11px 18px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(15, 44, 76, 0.12);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(11, 34, 57, 0.08);
   }
-  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    min-width: 0;
+  }
   .seal-mark {
-    background: var(--ink-deep);
-    color: #fff;
-    font-size: 11.5px;
+    background: #0b2239;
+    color: #ffffff;
+    font-size: 11px;
     font-weight: 800;
-    padding: 6px 12px;
+    padding: 6px 10px;
     border-radius: 8px;
-    letter-spacing: -0.2px;
+    margin-right: 12px;
+    white-space: nowrap;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
   }
+  .brand-text { min-width: 0; }
   .brand h1 {
-    font-size: 18px;
+    font-size: 16.5px;
     font-weight: 900;
-    letter-spacing: -0.6px;
-    color: var(--ink-deep);
+    letter-spacing: -0.5px;
+    color: #0b2239;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .brand p {
-    font-size: 12px;
+    font-size: 11.5px;
     color: #526b82;
-    margin-top: 1px;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .top-actions { display: flex; align-items: center; gap: 10px; }
+  .top-actions {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
   .stat-pill {
     background: #f2f6fa;
     border: 1px solid rgba(15, 44, 76, 0.09);
-    padding: 6px 13px;
-    border-radius: 10px;
+    padding: 5px 11px;
+    border-radius: 9px;
     text-align: right;
+    margin-right: 8px;
   }
   .stat-pill span { display: block; font-size: 10px; color: #647d94; font-weight: 600; }
-  .stat-pill strong { font-size: 13.5px; color: var(--indigo); font-weight: 900; }
-  .stat-pill.accent strong { color: var(--vermilion); }
+  .stat-pill strong { font-size: 13px; color: #005f99; font-weight: 900; }
+  .stat-pill.accent strong { color: #d9480f; }
 
   .tab-bar {
+    display: -webkit-flex;
     display: flex;
     background: #eef3f8;
     padding: 3px;
     border-radius: 10px;
-    border: 1px solid var(--border);
+    border: 1px solid rgba(15, 44, 76, 0.11);
   }
   .tab-btn {
     border: none;
     background: transparent;
     color: #4f6880;
-    padding: 7px 13px;
+    padding: 7px 11px;
     font-size: 12px;
     font-weight: 800;
     border-radius: 7px;
     cursor: pointer;
-    transition: 0.2s;
-  }
-  .tab-btn.active {
-    background: var(--ink-deep);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(11, 34, 57, 0.18);
-  }
-
-  /* Bottom Floating Gallery Dock (Maximizes Pure White Canvas Space!) */
-  .bottom-dock {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 15;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 18px;
-    background: var(--glass);
-    border: 1px solid var(--border);
-    border-radius: 99px;
-    backdrop-filter: blur(14px);
-    box-shadow: var(--shadow);
     white-space: nowrap;
   }
-  .dock-group {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding-right: 12px;
-    border-right: 1px solid rgba(15, 44, 76, 0.12);
+  .tab-btn.active {
+    background: #0b2239;
+    color: #ffffff;
   }
-  .dock-group:last-child { border-right: none; padding-right: 0; }
-  .dock-label { font-size: 11.5px; font-weight: 800; color: #48627a; margin-right: 2px; }
+
+  /* Subtle Guide Caption */
+  .canvas-caption {
+    position: fixed;
+    top: 82px;
+    left: 22px;
+    right: 22px;
+    z-index: 10;
+    pointer-events: none;
+    font-size: 11.5px;
+    color: #6c849c;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+  .privacy-tag {
+    background: rgba(12, 166, 120, 0.11);
+    color: #0ca678;
+    border: 1px solid rgba(12, 166, 120, 0.32);
+    padding: 2px 9px;
+    border-radius: 99px;
+    font-size: 10.5px;
+    font-weight: 800;
+    margin-right: 8px;
+  }
+
+  /* Bottom Floating Dock */
+  .bottom-dock {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    max-width: 96%;
+    z-index: 15;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    padding: 9px 15px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(15, 44, 76, 0.13);
+    border-radius: 99px;
+    box-shadow: 0 10px 30px rgba(11, 34, 57, 0.10);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+  .bottom-dock::-webkit-scrollbar { display: none; }
+  .dock-group {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    padding-right: 10px;
+    margin-right: 10px;
+    border-right: 1px solid rgba(15, 44, 76, 0.12);
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
+  .dock-group:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+  .dock-label { font-size: 11px; font-weight: 800; color: #48627a; margin-right: 6px; }
 
   .chip-btn {
-    border: 1px solid rgba(15, 44, 76, 0.15);
-    background: #fff;
-    color: var(--ink-deep);
-    padding: 6px 11px;
+    border: 1px solid rgba(15, 44, 76, 0.16);
+    background: #ffffff;
+    color: #0b2239;
+    padding: 6px 10px;
     border-radius: 99px;
     font-size: 11.5px;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.18s;
+    margin-right: 5px;
+    white-space: nowrap;
   }
-  .chip-btn:hover, .chip-btn.active {
-    background: var(--indigo);
-    border-color: var(--indigo);
-    color: #fff;
+  .chip-btn:last-child { margin-right: 0; }
+  .chip-btn.active {
+    background: #005f99;
+    border-color: #005f99;
+    color: #ffffff;
   }
-  .chip-btn.stamp:hover, .chip-btn.stamp.active {
-    background: var(--vermilion);
-    border-color: var(--vermilion);
-    color: #fff;
+  .chip-btn.stamp.active {
+    background: #d9480f;
+    border-color: #d9480f;
+    color: #ffffff;
   }
 
   .search-mini {
+    display: -webkit-flex;
     display: flex;
+    -webkit-align-items: center;
     align-items: center;
-    background: #fff;
+    background: #ffffff;
     border: 1px solid rgba(15, 44, 76, 0.18);
     border-radius: 99px;
-    padding: 2px 4px 2px 12px;
+    padding: 2px 3px 2px 10px;
+    margin-left: 4px;
   }
   .search-mini input {
     border: none;
     outline: none;
-    font-size: 12px;
-    width: 115px;
-    color: var(--ink-deep);
+    font-size: 11.5px;
+    width: 96px;
+    color: #0b2239;
     background: transparent;
   }
   .search-mini button {
     border: none;
-    background: var(--ink-deep);
-    color: #fff;
+    background: #0b2239;
+    color: #ffffff;
     font-size: 11px;
     font-weight: 800;
-    padding: 5px 10px;
+    padding: 5px 9px;
     border-radius: 99px;
     cursor: pointer;
   }
 
   .btn-write {
+    background: #0066a6;
     background: linear-gradient(135deg, #0066a6, #0096c7);
-    color: #fff;
+    color: #ffffff;
     border: none;
-    padding: 8px 15px;
+    padding: 7px 14px;
     border-radius: 99px;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 114, 188, 0.25);
-  }
-  .btn-write:hover { filter: brightness(1.07); }
-
-  /* Subtle Hint Subtitle on White Canvas */
-  .canvas-caption {
-    position: fixed;
-    top: 86px;
-    left: 28px;
-    z-index: 10;
-    pointer-events: none;
-    font-size: 12px;
-    color: #6c849c;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .privacy-tag {
-    background: rgba(12, 166, 120, 0.1);
-    color: var(--teal);
-    border: 1px solid rgba(12, 166, 120, 0.3);
-    padding: 2px 9px;
-    border-radius: 99px;
-    font-size: 11px;
-    font-weight: 800;
+    margin-right: 6px;
+    white-space: nowrap;
   }
 
-  /* Slim Collapsible Right Empirical Drawer */
+  /* Right Empirical Drawer (Desktop Side Card / Mobile Bottom Sheet) */
   .right-drawer {
     position: fixed;
-    top: 86px;
-    right: 24px;
-    width: 320px;
-    max-height: calc(100vh - 175px);
+    top: 84px;
+    right: 20px;
+    width: 315px;
+    max-height: 70%;
     z-index: 14;
-    background: rgba(255, 255, 255, 0.90);
-    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(15, 44, 76, 0.12);
     border-radius: 16px;
-    padding: 14px 15px;
-    backdrop-filter: blur(14px);
-    box-shadow: var(--shadow);
+    padding: 13px 14px;
+    box-shadow: 0 12px 34px rgba(11, 34, 57, 0.12);
+    display: -webkit-flex;
     display: flex;
+    -webkit-flex-direction: column;
     flex-direction: column;
-    transition: transform 0.32s ease, opacity 0.28s ease;
+    -webkit-transition: transform 0.28s ease, opacity 0.25s ease;
+    transition: transform 0.28s ease, opacity 0.25s ease;
   }
   .right-drawer.collapsed {
-    transform: translateX(350px);
+    -webkit-transform: translateX(360px);
+    transform: translateX(360px);
     opacity: 0;
     pointer-events: none;
   }
   .drawer-head {
+    display: -webkit-flex;
     display: flex;
+    -webkit-justify-content: space-between;
     justify-content: space-between;
+    -webkit-align-items: center;
     align-items: center;
-    padding-bottom: 9px;
+    padding-bottom: 8px;
     border-bottom: 1px solid rgba(15, 44, 76, 0.08);
-    margin-bottom: 9px;
+    margin-bottom: 8px;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
   }
-  .drawer-head strong { font-size: 13px; color: var(--ink-deep); }
+  .drawer-head strong { font-size: 13px; color: #0b2239; }
   .drawer-close {
     border: none; background: #eef3f8; color: #48627a;
-    font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px; cursor: pointer;
+    font-size: 11px; font-weight: 800; padding: 4px 9px; border-radius: 6px; cursor: pointer;
   }
   .log-list {
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    padding-right: 3px;
+    -webkit-overflow-scrolling: touch;
+    flex: 1;
+    -webkit-flex: 1;
   }
   .log-item {
     background: #f8fafd;
     border: 1px solid rgba(15, 44, 76, 0.09);
-    border-left: 3.5px solid var(--indigo);
+    border-left: 3.5px solid #005f99;
     border-radius: 9px;
-    padding: 9px 11px;
+    padding: 8px 10px;
+    margin-bottom: 7px;
     cursor: pointer;
-    transition: 0.15s;
   }
-  .log-item:hover { background: #eef5fc; }
   .log-item.highlighted {
     background: #fff8f5;
     border-color: rgba(217, 72, 15, 0.35);
-    border-left: 4px solid var(--vermilion);
+    border-left: 4px solid #d9480f;
   }
-  .log-item.salmon { border-left-color: var(--teal); }
-  .li-top { display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; }
-  .li-ym { color: var(--vermilion); font-size: 11px; }
-  .li-cheer { font-size: 12px; color: #243b53; margin: 4px 0 5px 0; font-weight: 600; }
+  .log-item.salmon { border-left-color: #0ca678; }
+  .li-top {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    font-size: 12px; font-weight: 800;
+  }
+  .li-ym { color: #d9480f; font-size: 11px; }
+  .li-cheer { font-size: 11.5px; color: #243b53; margin: 3px 0 5px 0; font-weight: 600; }
   .li-proof {
-    font-size: 10.5px; color: var(--teal); font-weight: 800;
-    background: rgba(12, 166, 120, 0.08); padding: 4px 7px; border-radius: 5px;
+    font-size: 10.5px; color: #0ca678; font-weight: 800;
+    background: rgba(12, 166, 120, 0.09); padding: 4px 7px; border-radius: 5px;
   }
 
-  /* Hover Magnifier Card on White Canvas */
+  /* Hover / Touch Magnifier Card */
   #hoverCard {
     position: fixed;
     pointer-events: none;
     z-index: 30;
-    background: rgba(255, 255, 255, 0.96);
-    border: 1.5px solid var(--ink-deep);
+    background: rgba(255, 255, 255, 0.97);
+    border: 1.5px solid #0b2239;
     border-radius: 12px;
-    padding: 10px 14px;
-    min-width: 245px;
-    box-shadow: 0 14px 34px rgba(11, 34, 57, 0.16);
+    padding: 9px 12px;
+    width: 248px;
+    box-shadow: 0 12px 28px rgba(11, 34, 57, 0.18);
     display: none;
   }
 
-  /* Write Cheer Modal */
+  /* Write Cheer Modal (Android 7 safe positioning — NO inset) */
   #writeModal {
     position: fixed;
-    inset: 0;
+    top: 0; right: 0; bottom: 0; left: 0;
     z-index: 40;
-    background: rgba(11, 34, 57, 0.32);
-    backdrop-filter: blur(5px);
+    background: rgba(11, 34, 57, 0.42);
     display: none;
+    -webkit-align-items: center;
     align-items: center;
+    -webkit-justify-content: center;
     justify-content: center;
+    padding: 16px;
   }
   .modal-card {
-    width: 420px;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: 0 24px 60px rgba(11, 34, 57, 0.22);
+    width: 100%;
+    max-width: 410px;
+    max-height: 90%;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid rgba(15, 44, 76, 0.15);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 20px 50px rgba(11, 34, 57, 0.25);
   }
-  .modal-card h3 { font-size: 18px; font-weight: 900; color: var(--ink-deep); }
-  .modal-card p { font-size: 12px; color: #5c748a; margin: 4px 0 16px 0; }
-  .m-field { margin-bottom: 11px; }
+  .modal-card h3 { font-size: 17px; font-weight: 900; color: #0b2239; }
+  .modal-card p { font-size: 11.5px; color: #5c748a; margin: 4px 0 14px 0; }
+  .m-field { margin-bottom: 10px; }
   .m-field label { display: block; font-size: 11.5px; font-weight: 800; color: #334e68; margin-bottom: 4px; }
   .m-field input, .m-field select {
-    width: 100%; padding: 9px 11px; border: 1px solid #cbd6e2; border-radius: 9px;
-    font-size: 12.5px; color: var(--ink-deep); outline: none;
+    width: 100%; padding: 8.5px 10px; border: 1px solid #cbd6e2; border-radius: 8px;
+    font-size: 12.5px; color: #0b2239; background: #ffffff; outline: none;
   }
-  .m-field input:focus, .m-field select:focus { border-color: var(--indigo); }
 
-  /* Mode 2: Public Gallery Wall Frame (원도심 거점 전시 프리뷰) */
+  /* Mode 2: Kiosk Venue Frame */
   body.kiosk-mode .bottom-dock,
   body.kiosk-mode .right-drawer,
-  body.kiosk-mode .canvas-caption { display: none; }
+  body.kiosk-mode .canvas-caption { display: none !important; }
   #kioskOverlay {
     position: fixed;
-    inset: 82px 26px 24px 26px;
+    top: 80px; right: 18px; bottom: 18px; left: 18px;
     z-index: 12;
-    border: 10px solid #1e293b;
-    border-radius: 18px;
-    box-shadow: 0 24px 60px rgba(11, 34, 57, 0.22);
+    border: 6px solid #1e293b;
+    border-radius: 16px;
     pointer-events: none;
     display: none;
   }
   body.kiosk-mode #kioskOverlay { display: block; }
   .kiosk-top-pills {
-    position: absolute; top: 16px; left: 18px; pointer-events: auto; display: flex; gap: 8px;
+    position: absolute; top: 12px; left: 12px; right: 12px;
+    pointer-events: auto;
+    overflow-x: auto; white-space: nowrap;
   }
   .kiosk-bottom-bar {
-    position: absolute; bottom: 16px; left: 18px; right: 18px;
-    background: rgba(255, 255, 255, 0.93);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 12px 18px;
-    display: flex; justify-content: space-between; align-items: center;
-    box-shadow: var(--shadow);
+    position: absolute; bottom: 12px; left: 12px; right: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(15, 44, 76, 0.14);
+    border-radius: 11px;
+    padding: 10px 14px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-align-items: center;
+    align-items: center;
   }
 
-  /* Mode 3: Budget & 12-Month Specification Sheet */
+  /* Mode 3: Budget Sheet */
   #budgetOverlay {
     position: fixed;
-    top: 84px; left: 24px; right: 24px; bottom: 24px;
+    top: 80px; right: 16px; bottom: 16px; left: 16px;
     z-index: 25;
-    background: rgba(255, 255, 255, 0.97);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 24px 28px;
-    box-shadow: var(--shadow);
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(15, 44, 76, 0.14);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 12px 36px rgba(11, 34, 57, 0.12);
     display: none;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  .b-grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 24px; margin-top: 18px; }
-  table.clean-tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .b-grid {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .b-col-left { width: 43%; padding-right: 18px; }
+  .b-col-right { width: 57%; }
+  table.clean-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
   table.clean-tbl th, table.clean-tbl td {
-    border-bottom: 1px solid #e3ebf3; padding: 9px 10px; text-align: left;
+    border-bottom: 1px solid #e3ebf3; padding: 8px 8px; text-align: left;
   }
-  table.clean-tbl th { background: #f1f6fb; color: var(--ink-deep); font-weight: 800; }
+  table.clean-tbl th { background: #f1f6fb; color: #0b2239; font-weight: 800; }
 
   #toast {
-    position: fixed; top: 86px; left: 50%; transform: translateX(-50%);
-    z-index: 50; background: var(--ink-deep); color: #fff;
-    padding: 10px 22px; border-radius: 99px; font-size: 12.5px; font-weight: 800;
-    box-shadow: 0 10px 28px rgba(11, 34, 57, 0.25); display: none;
+    position: fixed; top: 82px; left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    z-index: 50; background: #0b2239; color: #ffffff;
+    padding: 9px 18px; border-radius: 99px; font-size: 12px; font-weight: 800;
+    max-width: 90%; text-align: center;
+    box-shadow: 0 8px 24px rgba(11, 34, 57, 0.25); display: none;
+  }
+
+  /* ========== Mobile Phone Responsive Rules (Android 7 / 320px~768px) ========== */
+  @media screen and (max-width: 820px) {
+    .topbar {
+      top: 8px; left: 8px; right: 8px;
+      padding: 8px 11px;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+      border-radius: 12px;
+    }
+    .brand { width: 100%; margin-bottom: 6px; }
+    .seal-mark { font-size: 10px; padding: 4px 8px; margin-right: 8px; }
+    .brand h1 { font-size: 13.5px; }
+    .brand p { display: none; }
+
+    .top-actions {
+      width: 100%;
+      -webkit-justify-content: space-between;
+      justify-content: space-between;
+    }
+    .stat-pill { display: none; }
+    .tab-bar { width: 100%; -webkit-justify-content: space-between; justify-content: space-between; }
+    .tab-btn { flex: 1; -webkit-flex: 1; text-align: center; padding: 6px 4px; font-size: 11px; }
+
+    .canvas-caption {
+      top: 84px; left: 10px; right: 10px;
+      font-size: 10.5px;
+    }
+    .canvas-caption .guide-long { display: none; }
+    .canvas-caption .guide-short { display: inline !important; }
+
+    /* Bottom Dock becomes sleek touch-scrollable bar on phones */
+    .bottom-dock {
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      max-width: none;
+      -webkit-transform: none;
+      transform: none;
+      border-radius: 14px;
+      padding: 8px 10px;
+    }
+    .dock-label { display: none; }
+
+    /* Drawer becomes a sleek Bottom Sheet on Mobile! */
+    .right-drawer {
+      top: auto;
+      left: 8px;
+      right: 8px;
+      bottom: 64px;
+      width: auto;
+      max-height: 44%;
+      border-radius: 14px;
+    }
+    .right-drawer.collapsed {
+      -webkit-transform: translateY(120%);
+      transform: translateY(120%);
+    }
+
+    #kioskOverlay { top: 82px; left: 8px; right: 8px; bottom: 8px; border-width: 4px; }
+    .kiosk-bottom-bar { -webkit-flex-direction: column; flex-direction: column; -webkit-align-items: flex-start; align-items: flex-start; }
+    .kiosk-qr-txt { display: none; }
+
+    #budgetOverlay { top: 82px; left: 8px; right: 8px; bottom: 8px; padding: 14px; }
+    .b-col-left, .b-col-right { width: 100%; padding-right: 0; margin-bottom: 16px; }
+
+    #hoverCard { width: 224px; padding: 8px 10px; }
   }
 </style>
 </head>
@@ -401,99 +541,100 @@
 <!-- Top Header -->
 <header class="topbar">
   <div class="brand">
-    <div class="seal-mark">울산 중구 고향사랑기금</div>
-    <div>
+    <div class="seal-mark">울산 중구 기금</div>
+    <div class="brand-text">
       <h1>데이터의 강을 유영하는 미디어아트 〈태화강 한글고래〉 및 12달 실증 복지기금 사업</h1>
       <p>순백 여백 위 우리 영해 ‘한국계 귀신고래(쇠고래)’의 2차원 수묵 한글 살결로 살아 헤엄치는 실증 아카이브</p>
     </div>
   </div>
   <div class="top-actions">
     <div class="stat-pill">
-      <span>등재 한글 데이터 입자</span>
+      <span>등재 한글 입자</span>
       <strong id="kpiCount">1,420 개</strong>
     </div>
     <div class="stat-pill accent">
-      <span>12달 실증 복지 수혜</span>
+      <span>12달 실증 수혜</span>
       <strong>연 1,250 명</strong>
     </div>
     <div class="tab-bar">
-      <button class="tab-btn active" id="btnViewWhale" onclick="setMode('whale', this)">① 백색 여백 유영뷰</button>
-      <button class="tab-btn" id="btnViewKiosk" onclick="setMode('kiosk', this)">② 도서관·큰애기하우스 전시뷰</button>
-      <button class="tab-btn" id="btnViewBudget" onclick="setMode('budget', this)">③ 9,500만 원 기금설계표</button>
+      <button class="tab-btn active" id="btnViewWhale" onclick="setMode('whale', this)">① 수묵고래 유영</button>
+      <button class="tab-btn" id="btnViewKiosk" onclick="setMode('kiosk', this)">② 원도심 전시뷰</button>
+      <button class="tab-btn" id="btnViewBudget" onclick="setMode('budget', this)">③ 9,500만 예산표</button>
     </div>
   </div>
 </header>
 
-<!-- Subtle Guide Caption -->
+<!-- Guide Caption -->
 <div class="canvas-caption">
-  <span class="privacy-tag">기부금액 비공개 · 참여평등 원칙</span>
-  <span>마우스를 고래 결에 가져가면 물결처럼 반응하며 응원글과 20자 실증 복지가 떠오릅니다 (클릭 시 별자리 추적)</span>
+  <span class="privacy-tag">금액 비공개 · 평등원칙</span>
+  <span class="guide-long">마우스(또는 손가락 터치)로 고래 살결을 스치면 물결처럼 반응하며 응원글과 20자 실증 복지가 떠오릅니다</span>
+  <span class="guide-short" style="display:none;">고래를 손가락으로 터치·드래그하면 물결 반응과 실증 복지가 표시됩니다</span>
 </div>
 
-<!-- Right Collapsible Empirical Drawer -->
+<!-- Right Drawer / Mobile Bottom Sheet -->
 <aside class="right-drawer" id="rightDrawer">
   <div class="drawer-head">
-    <strong id="drawerTitle">‘김울산’ 님 다회 참여 흔적 (5곳)</strong>
-    <button class="drawer-close" onclick="toggleDrawer()">패널 접기 ✕</button>
+    <strong id="drawerTitle">‘김울산’ 님 실증 분포 (5곳)</strong>
+    <button class="drawer-close" onclick="toggleDrawer()">닫기 ✕</button>
   </div>
   <div class="log-list" id="logList"></div>
 </aside>
 
-<!-- Bottom Minimalist Dock -->
+<!-- Bottom Control Dock (Touch-Scrollable on Mobile) -->
 <nav class="bottom-dock">
   <div class="dock-group">
-    <span class="dock-label">데이터 충진</span>
-    <button class="chip-btn" onclick="setFill(18, this)">1월 윤곽(18%)</button>
-    <button class="chip-btn" onclick="setFill(55, this)">6월 성장(55%)</button>
-    <button class="chip-btn active" id="fill100Btn" onclick="setFill(100, this)">12월 만개(100%)</button>
+    <button class="btn-write" onclick="openWriteModal()">✦ 응원 한글 새기기</button>
+    <button class="chip-btn" onclick="toggleDrawer()">실증기록창</button>
   </div>
 
-  <div class="dock-group">
-    <span class="dock-label">내 분포 찾기</span>
-    <button class="chip-btn stamp active" id="tagKim" onclick="selectPerson('김울산', this)">★ 김울산(5회)</button>
+  <div class="dock-group" id="personGroup">
+    <span class="dock-label">분포 찾기</span>
+    <button class="chip-btn stamp active" onclick="selectPerson('김울산', this)">★ 김울산(5회)</button>
     <button class="chip-btn stamp" onclick="selectPerson('이성남', this)">★ 이성남(3회)</button>
-    <button class="chip-btn stamp" onclick="selectPerson('박학성', this)">★ 박학성(봉사4회)</button>
+    <button class="chip-btn stamp" onclick="selectPerson('박학성', this)">★ 박학성(봉사)</button>
     <button class="chip-btn" onclick="selectPerson(null, this)">전체 유영</button>
     <div class="search-mini">
-      <input type="text" id="qName" placeholder="이름 직접 검색" onkeydown="if(event.key==='Enter') manualSearch()" />
+      <input type="text" id="qName" placeholder="이름 검색" onkeydown="if(event.keyCode===13) manualSearch()" />
       <button onclick="manualSearch()">검색</button>
     </div>
   </div>
 
-  <div class="dock-group">
-    <button class="btn-write" onclick="openWriteModal()">✦ 내 응원 한글 새기기</button>
-    <button class="chip-btn" onclick="openDrawerIfClosed()">실증기록창</button>
+  <div class="dock-group" id="fillGroup">
+    <span class="dock-label">충진도</span>
+    <button class="chip-btn" onclick="setFill(18, this)">1월(18%)</button>
+    <button class="chip-btn" onclick="setFill(55, this)">6월(55%)</button>
+    <button class="chip-btn active" onclick="setFill(100, this)">12월(100%)</button>
   </div>
 </nav>
 
-<!-- Mode 2: Public Venue Display Preview -->
+<!-- Mode 2: Kiosk Venue Preview -->
 <div id="kioskOverlay">
-  <div class="kiosk-top-pills">
-    <button class="chip-btn active" onclick="setVenue(0, this)">거점 ① 종갓집도서관 1층 로비 월(Wall)</button>
-    <button class="chip-btn" onclick="setVenue(1, this)">거점 ② 성남동 울산큰애기하우스 쇼윈도</button>
-    <button class="chip-btn" onclick="setVenue(2, this)">거점 ③ 울산 중구청 민원실 대형 모니터</button>
+  <div class="kiosk-top-pills" id="venueGroup">
+    <button class="chip-btn active" onclick="setVenue(0, this)">① 종갓집도서관 로비</button>
+    <button class="chip-btn" onclick="setVenue(1, this)">② 성남동 큰애기하우스</button>
+    <button class="chip-btn" onclick="setVenue(2, this)">③ 중구청 민원실</button>
   </div>
   <div class="kiosk-bottom-bar">
     <div>
-      <div id="venueSub" style="font-size:11.5px;font-weight:800;color:var(--indigo);">
-        [신축비 0원 공공미디어아트] 종갓집도서관 백색 벽면 모니터 상설 송출 화면
+      <div id="venueSub" style="font-size:11px;font-weight:800;color:#005f99;">
+        [신축비 0원 공공미디어아트] 종갓집도서관 1층 백색 로비 미디어월 상설 송출 화면
       </div>
-      <div id="kioskTicker" style="font-size:14.5px;font-weight:900;color:var(--ink-deep);margin-top:2px;">
-        김울산 님 · “우리 아들 힘내라! 새해 복 많이” ── [2027.01 실증완료] 원도심 홀몸어르신 방한키트 80가구 전달
+      <div id="kioskTicker" style="font-size:13px;font-weight:900;color:#0b2239;margin-top:2px;">
+        김울산 님 · “우리 아들 힘내라! 새해 복 많이” ── [2027.01 실증] 방한키트 80가구 전달
       </div>
     </div>
-    <div style="text-align:right;border-left:1px solid #d8e2ec;padding-left:16px;">
-      <div style="font-size:11px;font-weight:800;color:var(--vermilion);">스마트폰 QR 스캔 즉시 참여</div>
-      <div style="font-size:13px;font-weight:900;color:var(--ink-deep);">내 이름 찾기 · 고향사랑e음 기부</div>
+    <div class="kiosk-qr-txt" style="text-align:right;border-left:1px solid #d8e2ec;padding-left:14px;">
+      <div style="font-size:10.5px;font-weight:800;color:#d9480f;">스마트폰 QR 스캔 연동</div>
+      <div style="font-size:12.5px;font-weight:900;color:#0b2239;">내 이름 찾기 · 고향사랑기부</div>
     </div>
   </div>
 </div>
 
-<!-- Write New Particle Modal -->
+<!-- Write Cheer Modal -->
 <div id="writeModal" onclick="if(event.target===this) closeWriteModal()">
   <div class="modal-card">
-    <h3>〈태화강 한글고래〉에 내 응원 한글 새기기</h3>
-    <p>기부 금액은 공개되지 않으며, 당월 실제 집행된 복지 기록과 함께 영구 유영합니다.</p>
+    <h3>〈태화강 한글고래〉 응원 한글 새기기</h3>
+    <p>기부 금액은 비공개이며, 당월 실제 복지 실증 기록과 함께 영구 유영합니다.</p>
     <div class="m-field">
       <label>참여자 성명 (또는 별칭)</label>
       <input type="text" id="inName" value="최외솔" maxlength="8" />
@@ -501,8 +642,8 @@
     <div class="m-field">
       <label>참여 유형</label>
       <select id="inType">
-        <option value="DONOR">고향사랑기부 참여 (거대 한글고래 몸체 등재)</option>
-        <option value="VOLUNTEER">중구 청소년·구민 자원봉사 (태화강 한글연어떼 등재)</option>
+        <option value="DONOR">고향사랑기부 참여 (귀신고래 몸체 등재)</option>
+        <option value="VOLUNTEER">중구 청소년·구민 자원봉사 (한글연어떼 등재)</option>
       </select>
     </div>
     <div class="m-field">
@@ -526,54 +667,54 @@
         <option value="11">2027.12 | 연말 청소년산타 온기나눔 100가구 완수</option>
       </select>
     </div>
-    <div style="display:flex; gap:8px; margin-top:16px;">
-      <button class="btn-write" style="flex:1; padding:11px;" onclick="submitNewParticle()">✦ 백색 수면 위로 한글 띄우기</button>
-      <button class="chip-btn" style="padding:11px 18px;" onclick="closeWriteModal()">닫기</button>
+    <div style="display:-webkit-flex;display:flex;margin-top:14px;">
+      <button class="btn-write" style="flex:1;-webkit-flex:1;padding:10px;" onclick="submitNewParticle()">✦ 백색 수면 위로 한글 띄우기</button>
+      <button class="chip-btn" style="padding:10px 16px;" onclick="closeWriteModal()">닫기</button>
     </div>
   </div>
 </div>
 
 <!-- Mode 3: Budget & 12-Month Specification Sheet -->
 <section id="budgetOverlay">
-  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2px solid #0b2239;padding-bottom:14px;">
+  <div style="display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;-webkit-align-items:flex-end;align-items:flex-end;-webkit-flex-wrap:wrap;flex-wrap:wrap;border-bottom:2px solid #0b2239;padding-bottom:12px;">
     <div>
-      <h2 style="font-size:21px;font-weight:900;color:var(--ink-deep);">2027년 울산 중구 고향사랑기금 1억 이내 복합사업 설계·예산 총괄표</h2>
-      <p style="font-size:13px;color:#526b82;margin-top:4px;">3차원 실증 데이터의 초경량 2차원 타이포그래피 구현 · 물리적 조형물 신축비 0원 · 직접 현장복지·봉사비 76.8% 투입</p>
+      <h2 style="font-size:18px;font-weight:900;color:#0b2239;">울산 중구 고향사랑기금 1억 이내 복합사업 설계·예산 총괄표</h2>
+      <p style="font-size:12px;color:#526b82;margin-top:3px;">한국계 귀신고래 초경량 2D 수묵 타이포 구현 · 신축비 0원 · 직접 현장복지·봉사비 76.8%</p>
     </div>
-    <div style="text-align:right;">
-      <span style="font-size:12px;font-weight:800;color:var(--vermilion);">총 소요예산 (지정기부사업 · 1억 원 이하)</span>
-      <div style="font-size:25px;font-weight:900;color:var(--indigo);">95,000,000 원</div>
+    <div style="text-align:right;margin-top:6px;">
+      <span style="font-size:11px;font-weight:800;color:#d9480f;">총 소요예산 (지정기부사업)</span>
+      <div style="font-size:21px;font-weight:900;color:#005f99;">95,000,000 원</div>
     </div>
   </div>
   <div class="b-grid">
-    <div>
-      <h3 style="font-size:15px;margin-bottom:12px;color:var(--ink-deep);">1. 고향사랑기부금법 제11조제2항 4대 분야 복합 편성</h3>
+    <div class="b-col-left">
+      <h3 style="font-size:14px;margin-bottom:10px;color:#0b2239;">1. 법정 4대 분야 복합 예산 편성</h3>
       <table class="clean-tbl">
         <thead>
           <tr><th>공모 분야 및 세부 모듈</th><th>예산</th><th>비중</th></tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>① 취약계층·청소년 보호 (12달 실증 복지기금)</strong><br/><span style="font-size:11.5px;color:#5c748a;">홀몸어르신·장애인 6회(3,600만) + 위기·저소득청소년 6회(2,900만)</span></td>
-            <td style="font-weight:900;color:var(--indigo);">6,500만 원</td><td><strong>68.4%</strong></td>
+            <td><strong>① 취약계층·청소년 보호 (12달 실증복지)</strong><br/><span style="font-size:11px;color:#5c748a;">어르신·장애인 6회(3,600만) + 청소년 6회(2,900만)</span></td>
+            <td style="font-weight:900;color:#005f99;white-space:nowrap;">6,500만</td><td><strong>68.4%</strong></td>
           </tr>
           <tr>
-            <td><strong>② 주민 문화·예술 증진 (〈태화강 한글고래〉 웹 구축)</strong><br/><span style="font-size:11.5px;color:#5c748a;">초경량 2D 타이포 유영 엔진·별자리 검색·금칙어 CMS·서버 3년 선납</span></td>
-            <td style="font-weight:900;color:var(--indigo);">1,700만 원</td><td><strong>17.9%</strong></td>
+            <td><strong>② 주민 문화·예술 증진 (〈태화강 한글고래〉)</strong><br/><span style="font-size:11px;color:#5c748a;">초경량 2D 수묵 유영 웹·금칙어 CMS·서버 3년</span></td>
+            <td style="font-weight:900;color:#005f99;white-space:nowrap;">1,700만</td><td><strong>17.9%</strong></td>
           </tr>
           <tr>
-            <td><strong>③ 시민참여·자원봉사 활성화 (한글연어 봉사단)</strong><br/><span style="font-size:11.5px;color:#5c748a;">청소년·구민 월 1회 전달·안부확인 및 봉사자 한글연어 동등 등재</span></td>
-            <td style="font-weight:900;color:var(--teal);">800만 원</td><td><strong>8.4%</strong></td>
+            <td><strong>③ 시민참여·자원봉사 (한글연어 봉사단)</strong><br/><span style="font-size:11px;color:#5c748a;">청소년·구민 전달봉사 및 한글연어 동등 등재</span></td>
+            <td style="font-weight:900;color:#0ca678;white-space:nowrap;">800만</td><td><strong>8.4%</strong></td>
           </tr>
           <tr>
-            <td><strong>④ 주민 복리 및 원도심 전시·전통시장 환류</strong><br/><span style="font-size:11.5px;color:#5c748a;">도서관·큰애기하우스·민원실 기존 모니터 연동 및 전통시장 조달</span></td>
-            <td style="font-weight:900;color:var(--vermilion);">500만 원</td><td><strong>5.3%</strong></td>
+            <td><strong>④ 주민 복리·원도심 전시 및 전통시장 상생</strong><br/><span style="font-size:11px;color:#5c748a;">도서관·큰애기하우스 모니터 연동·시장 조달</span></td>
+            <td style="font-weight:900;color:#d9480f;white-space:nowrap;">500만</td><td><strong>5.3%</strong></td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div>
-      <h3 style="font-size:15px;margin-bottom:12px;color:var(--ink-deep);">2. 고래의 살결을 채우는 「12달 20자 실증 복지 미션」 캘린더</h3>
+    <div class="b-col-right">
+      <h3 style="font-size:14px;margin-bottom:10px;color:#0b2239;">2. 「12달 20자 실증 복지 미션」 연간 캘린더</h3>
       <table class="clean-tbl">
         <thead>
           <tr><th>월</th><th>구분</th><th>고래 입자에 영구 각인되는 20자 실증 복지 기록</th><th>예산</th></tr>
@@ -585,785 +726,900 @@
 </section>
 
 <script>
-const MISSIONS = [
-  { ym: "2027.01", cat: "어르신돌봄", log: "원도심 홀몸어르신 방한키트 80가구 전달", budget: "550만" },
-  { ym: "2027.02", cat: "청소년육성", log: "중구 청소년 새학기 학습꾸러미 60명 지원", budget: "500만" },
-  { ym: "2027.03", cat: "취약계층",   log: "거동불편 취약가구 봄영양식 100세트 완료", budget: "550만" },
-  { ym: "2027.04", cat: "청소년보호", log: "위기청소년 마음치유 도서바우처 70명 지원", budget: "450만" },
-  { ym: "2027.05", cat: "어르신돌봄", log: "가정의달 어르신 전통시장 보양식 120인분", budget: "600만" },
-  { ym: "2027.06", cat: "청소년육성", log: "지역아동센터 생태·한글탐방 100명 완주", budget: "450만" },
-  { ym: "2027.07", cat: "어르신돌봄", log: "폭염취약 독거어르신 여름쿨키트 90가구", budget: "600만" },
-  { ym: "2027.08", cat: "청소년보호", log: "여름방학 결식우려아동 든든도시락 250식", budget: "550만" },
-  { ym: "2027.09", cat: "취약계층",   log: "추석 소외이웃 전통시장 명절상 100가구", budget: "650만" },
-  { ym: "2027.10", cat: "세대통합",   log: "한글날 어르신 큰글자 안부책 60권 헌정", budget: "500만" },
-  { ym: "2027.11", cat: "어르신돌봄", log: "원도심 홀몸어르신 김장김치 120상자 전달", budget: "600만" },
-  { ym: "2027.12", cat: "청소년봉사", log: "연말 청소년산타 온기나눔 100가구 완수", budget: "500만" }
-];
+/* Android 7 (Chrome 51 WebView / Samsung Internet 5+) 100% 호환 ES5 스크립트 */
+(function() {
+  var MISSIONS = [
+    { ym: "2027.01", cat: "어르신돌봄", log: "원도심 홀몸어르신 방한키트 80가구 전달", budget: "550만" },
+    { ym: "2027.02", cat: "청소년육성", log: "중구 청소년 새학기 학습꾸러미 60명 지원", budget: "500만" },
+    { ym: "2027.03", cat: "취약계층",   log: "거동불편 취약가구 봄영양식 100세트 완료", budget: "550만" },
+    { ym: "2027.04", cat: "청소년보호", log: "위기청소년 마음치유 도서바우처 70명 지원", budget: "450만" },
+    { ym: "2027.05", cat: "어르신돌봄", log: "가정의달 어르신 전통시장 보양식 120인분", budget: "600만" },
+    { ym: "2027.06", cat: "청소년육성", log: "지역아동센터 생태·한글탐방 100명 완주", budget: "450만" },
+    { ym: "2027.07", cat: "어르신돌봄", log: "폭염취약 독거어르신 여름쿨키트 90가구", budget: "600만" },
+    { ym: "2027.08", cat: "청소년보호", log: "여름방학 결식우려아동 든든도시락 250식", budget: "550만" },
+    { ym: "2027.09", cat: "취약계층",   log: "추석 소외이웃 전통시장 명절상 100가구", budget: "650만" },
+    { ym: "2027.10", cat: "세대통합",   log: "한글날 어르신 큰글자 안부책 60권 헌정", budget: "500만" },
+    { ym: "2027.11", cat: "어르신돌봄", log: "원도심 홀몸어르신 김장김치 120상자 전달", budget: "600만" },
+    { ym: "2027.12", cat: "청소년봉사", log: "연말 청소년산타 온기나눔 100가구 완수", budget: "500만" }
+  ];
 
-const VENUES = [
-  "[신축비 0원 공공미디어아트] 종갓집도서관 1층 백색 로비 미디어월 상설 송출 화면",
-  "[원도심 걷고싶은거리 연동] 성남동 문화의거리 ‘울산큰애기하우스’ 쇼윈도 상설 전시 화면",
-  "[방문 민원인 체감 아카이브] 울산광역시 중구청 1층 민원실 대형 모니터 실시간 송출 화면"
-];
+  var VENUES = [
+    "[신축비 0원 공공미디어아트] 종갓집도서관 1층 백색 로비 미디어월 상설 송출 화면",
+    "[원도심 걷고싶은거리 연동] 성남동 문화의거리 ‘울산큰애기하우스’ 쇼윈도 상설 전시 화면",
+    "[방문 민원인 체감 아카이브] 울산광역시 중구청 1층 민원실 대형 모니터 실시간 송출 화면"
+  ];
 
-const bBody = document.getElementById("bMissionBody");
-MISSIONS.forEach((m, i) => {
-  const tr = document.createElement("tr");
-  tr.innerHTML = `<td style="font-weight:800;color:var(--vermilion);">${i+1}월</td><td>${m.cat}</td><td style="font-weight:800;color:var(--indigo);">${m.log}</td><td><strong>${m.budget}</strong></td>`;
-  bBody.appendChild(tr);
-});
-
-const SAMPLE_NAMES = ["박병영","최태화","정우정","강복산","윤반구","조약사","장다운","한학성","오성남","서옥교","신교동","권유곡","황장현","송동동","류서동","임남외","배북정"];
-const SAMPLE_CHEERS = [
-  "우리 아들 힘내라!", "부모님 늘 건강하세요", "고향 중구 응원합니다", "우리 딸 수능 대박!",
-  "따뜻한 밥상 되길", "외솔의 한글 자랑스러워", "할머니 오래 사세요", "첫 월급 기쁨 나눠요",
-  "손주 지안이 첫돌 기념", "태화강처럼 맑게 자라길", "이웃과 함께하는 겨울", "청춘들아 기운 내자!"
-];
-const HANGUL_STREAM = "태화강한글고래울산중구외솔사랑희망온기동행봄빛꿈별어르신청소년함께해요고맙습니다건강하세요힘내라";
-
-const canvas = document.getElementById("whaleCanvas");
-const ctx = canvas.getContext("2d");
-let W = window.innerWidth, H = window.innerHeight;
-function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-window.addEventListener("resize", resize);
-resize();
-
-// Mouse fluid interaction state
-let mouseX = -9999, mouseY = -9999;
-let smoothMX = W * 0.45, smoothMY = H * 0.5;
-let ripples = [];
-let inkSpouts = [];
-let flyingDrops = [];
-let hoveredParticle = null;
-
-window.addEventListener("mousemove", e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  if (Math.random() < 0.16) {
-    ripples.push({ x: mouseX, y: mouseY, r: 4, maxR: 85 + Math.random() * 45, alpha: 0.22 });
-  }
-});
-window.addEventListener("mouseleave", () => { mouseX = -9999; mouseY = -9999; });
-canvas.addEventListener("click", e => {
-  ripples.push({ x: e.clientX, y: e.clientY, r: 6, maxR: 190, alpha: 0.45 });
-  if (hoveredParticle) {
-    selectPerson(hoveredParticle.p.name);
-  } else {
-    triggerInkSpout();
-  }
-});
-
-/*
-  Authentic Korean Gray Whale (한국계 귀신고래, 천연기념물 제126호 울산 회유종) Anatomical Profile!
-  - Sleek spindle body, arched baleen mouthline, compact paddle pectoral flipper,
-    low dorsal hump + 7 rhythmic dorsal knuckles, slender peduncle & wide horizontal fluke,
-    and natural charcoal-slate & silver-barnacle mottled sumuk pattern!
-*/
-function getWhaleSilhouette(u) {
-  let topY, botY, halfZ;
-  if (u < 0.17) {
-    const k = u / 0.17;
-    topY = -0.02 + Math.pow(k, 0.76) * 0.42;
-  } else if (u < 0.36) {
-    const k = (u - 0.17) / 0.19;
-    topY = 0.40 + Math.sin(k * Math.PI * 0.5) * 0.13;
-  } else if (u < 0.62) {
-    const k = (u - 0.36) / 0.26;
-    topY = 0.53 - Math.pow(k, 1.15) * 0.15;
-  } else if (u < 0.90) {
-    const k = (u - 0.62) / 0.28;
-    const base = 0.38 * Math.pow(1 - k, 1.25) + 0.052;
-    const hump = 0.055 * Math.exp(-Math.pow((u - 0.65) / 0.026, 2));
-    const knuckles = (u >= 0.68) ? 0.018 * Math.abs(Math.sin((u - 0.68) * 78.0)) * (1 - k) : 0.0;
-    topY = base + hump + knuckles;
-  } else {
-    topY = 0.052;
+  // Safe helper replacing NodeList.forEach for Android 7 WebView
+  function eachNode(selector, fn, root) {
+    var list = (root || document).querySelectorAll(selector);
+    for (var i = 0; i < list.length; i++) fn(list[i], i);
   }
 
-  if (u < 0.05) {
-    botY = 0.03 + (u / 0.05) * 0.13;
-  } else if (u < 0.34) {
-    const k = (u - 0.05) / 0.29;
-    botY = 0.16 + Math.sin(k * Math.PI * 0.58) * 0.48;
-  } else if (u < 0.90) {
-    const k = (u - 0.34) / 0.56;
-    botY = 0.62 * Math.pow(1 - k, 1.48) + 0.052;
-  } else {
-    botY = 0.052;
+  var bBody = document.getElementById("bMissionBody");
+  for (var mi = 0; mi < MISSIONS.length; mi++) {
+    var m = MISSIONS[mi];
+    var tr = document.createElement("tr");
+    tr.innerHTML = '<td style="font-weight:800;color:#d9480f;white-space:nowrap;">' + (mi + 1) + '월</td>' +
+      '<td style="white-space:nowrap;">' + m.cat + '</td>' +
+      '<td style="font-weight:800;color:#005f99;">' + m.log + '</td>' +
+      '<td style="white-space:nowrap;"><strong>' + m.budget + '</strong></td>';
+    bBody.appendChild(tr);
   }
 
-  if (u < 0.32) {
-    halfZ = Math.sin((u / 0.32) * Math.PI * 0.5) * 0.68 + 0.05;
-  } else if (u < 0.90) {
-    halfZ = 0.68 * Math.pow(1 - (u - 0.32) / 0.58, 1.3) + 0.05;
-  } else {
-    halfZ = 0.05;
+  var SAMPLE_NAMES = ["박병영","최태화","정우정","강복산","윤반구","조약사","장다운","한학성","오성남","서옥교","신교동","권유곡","황장현","송동동","류서동","임남외","배북정"];
+  var SAMPLE_CHEERS = [
+    "우리 아들 힘내라!", "부모님 늘 건강하세요", "고향 중구 응원합니다", "우리 딸 수능 대박!",
+    "따뜻한 밥상 되길", "외솔의 한글 자랑스러워", "할머니 오래 사세요", "첫 월급 기쁨 나눠요",
+    "손주 지안이 첫돌 기념", "태화강처럼 맑게 자라길", "이웃과 함께하는 겨울", "청춘들아 기운 내자!"
+  ];
+  var HANGUL_STREAM = "태화강한글고래울산중구외솔사랑희망온기동행봄빛꿈별어르신청소년함께해요고맙습니다건강하세요힘내라";
+  var FONT_STACK = "'Pretendard', 'Noto Sans CJK KR', 'Noto Sans KR', 'Roboto', 'Malgun Gothic', sans-serif";
+
+  var canvas = document.getElementById("whaleCanvas");
+  var ctx = canvas.getContext("2d");
+  var W = window.innerWidth, H = window.innerHeight, DPR = 1;
+  var isMobile = false;
+
+  function resize() {
+    W = window.innerWidth || document.documentElement.clientWidth;
+    H = window.innerHeight || document.documentElement.clientHeight;
+    isMobile = (W <= 820);
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   }
-  return { topY, botY, halfZ };
-}
+  window.addEventListener("resize", resize, false);
+  resize();
 
-function mouthCurveY(u) {
-  const k = u / 0.195;
-  return 0.03 + k * 0.17 - Math.sin(k * Math.PI) * 0.085;
-}
+  // Collapse drawer initially on small mobile screens so the giant whale fills 100% of white screen!
+  if (isMobile) {
+    document.getElementById("rightDrawer").className = "right-drawer collapsed";
+  }
 
-const whaleParticles = [];
-const salmonSchool = [];
+  // Passive event listener feature detection for Android 7
+  var passiveOpt = false;
+  try {
+    var opts = Object.defineProperty({}, "passive", {
+      get: function() { passiveOpt = { passive: false }; return true; }
+    });
+    window.addEventListener("testPassive", null, opts);
+    window.removeEventListener("testPassive", null, opts);
+  } catch (e) {}
 
-function buildGiantWhaleDataset() {
-  let idCounter = 0;
+  var pointerX = -9999, pointerY = -9999, isTouchPointer = false;
+  var smoothMX = W * 0.45, smoothMY = H * 0.5;
+  var ripples = [];
+  var inkSpouts = [];
+  var flyingDrops = [];
+  var hoveredParticle = null;
 
-  // 1. Structured Spindle Body Ribbons with Crisp Arched Baleen Mouthline!
-  const numRows = 28;
-  for (let row = 0; row < numRows; row++) {
-    const isBackSide = (row >= 21);
-    const vNorm = isBackSide ? ((row - 21) / 7) : (row / 20);
-    const theta = (vNorm - 0.5) * Math.PI;
-    const cols = isBackSide ? 28 : 54;
+  function addRipple(x, y, maxR, alpha) {
+    if (ripples.length > 24) ripples.shift();
+    ripples.push({ x: x, y: y, r: 4, maxR: maxR, alpha: alpha });
+  }
 
-    for (let c = 0; c < cols; c++) {
-      const u = 0.012 + (c / cols) * 0.905 + ((row % 2) * 0.009) + (Math.random() - 0.5) * 0.016;
-      const sil = getWhaleSilhouette(u);
-      const sinT = Math.sin(theta);
-      const cosT = Math.cos(theta);
-      const localY = sinT < 0 ? (sinT * sil.topY) : (sinT * sil.botY);
+  // Mouse interaction
+  window.addEventListener("mousemove", function(e) {
+    isTouchPointer = false;
+    pointerX = e.clientX;
+    pointerY = e.clientY;
+    if (Math.random() < 0.16) addRipple(pointerX, pointerY, 85 + Math.random() * 40, 0.22);
+  }, false);
 
-      // Carve authentic arched baleen whale mouthline gap!
-      if (!isBackSide && u < 0.195) {
-        if (Math.abs(localY - mouthCurveY(u)) < 0.048) continue;
+  window.addEventListener("mouseleave", function() {
+    pointerX = -9999; pointerY = -9999;
+  }, false);
+
+  canvas.addEventListener("click", function(e) {
+    addRipple(e.clientX, e.clientY, 175, 0.42);
+    if (hoveredParticle) {
+      window.selectPerson(hoveredParticle.p.name);
+    } else {
+      triggerInkSpout();
+    }
+  }, false);
+
+  // Full Smartphone Touch Fluid Interaction (Android 7+ Touch Events)
+  canvas.addEventListener("touchstart", function(e) {
+    if (!e.touches || e.touches.length === 0) return;
+    isTouchPointer = true;
+    var tc = e.touches[0];
+    pointerX = tc.clientX;
+    pointerY = tc.clientY;
+    addRipple(pointerX, pointerY, 140, 0.38);
+  }, passiveOpt);
+
+  canvas.addEventListener("touchmove", function(e) {
+    if (!e.touches || e.touches.length === 0) return;
+    if (e.cancelable) e.preventDefault();
+    isTouchPointer = true;
+    var tc = e.touches[0];
+    pointerX = tc.clientX;
+    pointerY = tc.clientY;
+    if (Math.random() < 0.28) addRipple(pointerX, pointerY, 75 + Math.random() * 35, 0.25);
+  }, passiveOpt);
+
+  canvas.addEventListener("touchend", function() {
+    // Keep hover card visible briefly on mobile tap, then clear pointer repulsion
+    setTimeout(function() {
+      pointerX = -9999; pointerY = -9999;
+    }, 1600);
+  }, false);
+
+  // Korean Gray Whale (한국계 귀신고래) Anatomical Profile
+  function getWhaleSilhouette(u) {
+    var topY, botY, halfZ, k;
+    if (u < 0.17) {
+      k = u / 0.17;
+      topY = -0.02 + Math.pow(k, 0.76) * 0.42;
+    } else if (u < 0.36) {
+      k = (u - 0.17) / 0.19;
+      topY = 0.40 + Math.sin(k * Math.PI * 0.5) * 0.13;
+    } else if (u < 0.62) {
+      k = (u - 0.36) / 0.26;
+      topY = 0.53 - Math.pow(k, 1.15) * 0.15;
+    } else if (u < 0.90) {
+      k = (u - 0.62) / 0.28;
+      var base = 0.38 * Math.pow(1 - k, 1.25) + 0.052;
+      var hump = 0.055 * Math.exp(-Math.pow((u - 0.65) / 0.026, 2));
+      var knuckles = (u >= 0.68) ? 0.018 * Math.abs(Math.sin((u - 0.68) * 78.0)) * (1 - k) : 0.0;
+      topY = base + hump + knuckles;
+    } else {
+      topY = 0.052;
+    }
+
+    if (u < 0.05) {
+      botY = 0.03 + (u / 0.05) * 0.13;
+    } else if (u < 0.34) {
+      k = (u - 0.05) / 0.29;
+      botY = 0.16 + Math.sin(k * Math.PI * 0.58) * 0.48;
+    } else if (u < 0.90) {
+      k = (u - 0.34) / 0.56;
+      botY = 0.62 * Math.pow(1 - k, 1.48) + 0.052;
+    } else {
+      botY = 0.052;
+    }
+
+    if (u < 0.32) {
+      halfZ = Math.sin((u / 0.32) * Math.PI * 0.5) * 0.68 + 0.05;
+    } else if (u < 0.90) {
+      halfZ = 0.68 * Math.pow(1 - (u - 0.32) / 0.58, 1.3) + 0.05;
+    } else {
+      halfZ = 0.05;
+    }
+    return { topY: topY, botY: botY, halfZ: halfZ };
+  }
+
+  function mouthCurveY(u) {
+    var k = u / 0.195;
+    return 0.03 + k * 0.17 - Math.sin(k * Math.PI) * 0.085;
+  }
+
+  var whaleParticles = [];
+  var salmonSchool = [];
+
+  function buildGiantWhaleDataset() {
+    var idCounter = 0;
+    var row, c, f, k, s;
+
+    // 1. Spindle Body Ribbons
+    for (row = 0; row < 28; row++) {
+      var isBackSide = (row >= 21);
+      var vNorm = isBackSide ? ((row - 21) / 7) : (row / 20);
+      var theta = (vNorm - 0.5) * Math.PI;
+      var cols = isBackSide ? 28 : 54;
+
+      for (c = 0; c < cols; c++) {
+        var u = 0.012 + (c / cols) * 0.905 + ((row % 2) * 0.009) + (Math.random() - 0.5) * 0.016;
+        var sil = getWhaleSilhouette(u);
+        var sinT = Math.sin(theta);
+        var cosT = Math.cos(theta);
+        var localY = sinT < 0 ? (sinT * sil.topY) : (sinT * sil.botY);
+
+        if (!isBackSide && u < 0.195) {
+          if (Math.abs(localY - mouthCurveY(u)) < 0.048) continue;
+        }
+
+        var localZ = (isBackSide ? -1 : 1) * cosT * sil.halfZ;
+        var mIdx = idCounter % 12;
+        var isGroove = (!isBackSide && u > 0.08 && u < 0.38 && vNorm > 0.62);
+        var mottle = Math.sin(u * 34.0) * Math.cos(localY * 15.0) + 0.5 * Math.sin(u * 67.0 + localY * 27.0);
+
+        whaleParticles.push({
+          id: idCounter++,
+          type: "DONOR",
+          u: u, ly: localY, lz: localZ, mottle: mottle,
+          partLabel: u < 0.21 ? "아치형 주둥이" : (isGroove ? "턱밑 주름(응원결)" : (u > 0.63 && sinT < -0.5 ? "귀신고래 등마루" : "몸통·등줄기")),
+          isGroove: isGroove,
+          featured: false,
+          ox: 0, oy: 0, vx: 0, vy: 0,
+          name: SAMPLE_NAMES[idCounter % SAMPLE_NAMES.length],
+          cheer: SAMPLE_CHEERS[idCounter % SAMPLE_CHEERS.length],
+          ym: MISSIONS[mIdx].ym,
+          proof: MISSIONS[mIdx].log,
+          glyph: HANGUL_STREAM[(c + row * 3) % HANGUL_STREAM.length],
+          threshold: ((idCounter * 37) % 100)
+        });
       }
+    }
 
-      const localZ = (isBackSide ? -1 : 1) * cosT * sil.halfZ;
-      const mIdx = idCounter % 12;
-      const isGroove = (!isBackSide && u > 0.08 && u < 0.38 && vNorm > 0.62);
-      const mottle = Math.sin(u * 34.0) * Math.cos(localY * 15.0) + 0.5 * Math.sin(u * 67.0 + localY * 27.0);
+    // 2. Paddle-Shaped Pectoral Flippers
+    for (f = 0; f < 115; f++) {
+      var fg = (f < 82);
+      var tf = Math.pow((f % 82) / 82, 0.82);
+      var paddleHalfW = Math.sin(tf * Math.PI) * 0.12 + (1 - tf) * 0.04;
+      var offW = (Math.random() - 0.5) * 2 * paddleHalfW;
+      var uf = 0.275 + tf * 0.145 + offW * 0.28;
+      var lyf = 0.34 + tf * 0.46 + offW * 0.65;
+      if (!fg) { uf -= 0.02; lyf = lyf * 0.80 - 0.08; }
+      var lzf = fg ? (0.68 + tf * 0.22) : (-0.58 - tf * 0.18);
+      var mf = idCounter % 12;
 
       whaleParticles.push({
         id: idCounter++,
         type: "DONOR",
-        u, ly: localY, lz: localZ, mottle,
-        partLabel: u < 0.21 ? "아치형 주둥이" : (isGroove ? "턱밑 주름(응원결)" : (u > 0.63 && sinT < -0.5 ? "귀신고래 등마루" : "몸통·등줄기")),
-        isGroove,
+        u: uf, ly: lyf, lz: lzf, mottle: Math.sin(uf * 40 + lyf * 20),
+        partLabel: fg ? "노형 가슴지느러미" : "안쪽 가슴지느러미",
+        isGroove: false, featured: false,
         ox: 0, oy: 0, vx: 0, vy: 0,
         name: SAMPLE_NAMES[idCounter % SAMPLE_NAMES.length],
         cheer: SAMPLE_CHEERS[idCounter % SAMPLE_CHEERS.length],
-        ym: MISSIONS[mIdx].ym,
-        proof: MISSIONS[mIdx].log,
-        glyph: HANGUL_STREAM[(c + row * 3) % HANGUL_STREAM.length],
-        threshold: ((idCounter * 37) % 100)
+        ym: MISSIONS[mf].ym,
+        proof: MISSIONS[mf].log,
+        glyph: HANGUL_STREAM[idCounter % HANGUL_STREAM.length],
+        threshold: ((idCounter * 29) % 100)
+      });
+    }
+
+    // 3. Tail Fluke
+    for (k = 0; k < 140; k++) {
+      var lobe = (k % 2 === 0) ? -1 : 1;
+      var span = Math.pow(Math.random(), 0.72);
+      var chordW = (1 - span * 0.72) * 0.048 * Math.sin(span * Math.PI * 0.85 + 0.15);
+      var cPos = Math.random();
+      var leadU = 0.905 + Math.pow(span, 1.25) * 0.105;
+      var trailU = 0.968 + Math.pow(span, 1.1) * 0.062 - (1 - span) * 0.015;
+      var uk = leadU + cPos * (trailU - leadU);
+      var lyk = lobe * (span * (lobe < 0 ? 0.46 : 0.38)) + (Math.random() - 0.5) * chordW;
+      var lzk = lobe * span * 0.32;
+      var mk = idCounter % 12;
+
+      whaleParticles.push({
+        id: idCounter++,
+        type: "DONOR",
+        u: uk, ly: lyk, lz: lzk, mottle: 0.25,
+        partLabel: "수평 꼬리지느러미",
+        isGroove: false, featured: false,
+        ox: 0, oy: 0, vx: 0, vy: 0,
+        name: SAMPLE_NAMES[idCounter % SAMPLE_NAMES.length],
+        cheer: SAMPLE_CHEERS[idCounter % SAMPLE_CHEERS.length],
+        ym: MISSIONS[mk].ym,
+        proof: MISSIONS[mk].log,
+        glyph: HANGUL_STREAM[idCounter % HANGUL_STREAM.length],
+        threshold: ((idCounter * 43) % 100)
+      });
+    }
+
+    // 4. Eye Particle
+    var eyeP = whaleParticles[8];
+    eyeP.u = 0.205; eyeP.ly = 0.17; eyeP.lz = 0.75;
+    eyeP.partLabel = "고래의 눈동자"; eyeP.glyph = "빛"; eyeP.threshold = 0; eyeP.featured = true;
+
+    // Featured Personas
+    var kimSpots = [
+      { idx: 22,  m: 0, cheer: "우리 아들 힘내라! 새해 복 많이", u: 0.11, ly: -0.22, lz: 0.58, partLabel: "주둥이 상단" },
+      { idx: 180, m: 2, cheer: "어머니 늘 건강하세요 사랑합니다", u: 0.29, ly: 0.34,  lz: 0.65, partLabel: "턱밑 주름결" },
+      { idx: 350, m: 4, cheer: "울산 중구 고향 친구들 화이팅!", u: 0.49, ly: -0.32, lz: 0.58, partLabel: "등줄기 중앙" },
+      { idx: 720, m: 7, cheer: "아이들이 배고프지 않기를 바라며", u: 0.37, ly: 0.64,  lz: 0.78, partLabel: "노형 가슴지느러미" },
+      { idx: 880, m: 9, cheer: "외솔의 고장 중구 자랑스러워요", u: 0.98, ly: -0.32, lz: 0.28, partLabel: "꼬리지느러미" }
+    ];
+    for (var ki = 0; ki < kimSpots.length; ki++) {
+      var ks = kimSpots[ki];
+      var kp = whaleParticles[ks.idx % whaleParticles.length];
+      kp.name = "김울산"; kp.cheer = ks.cheer; kp.ym = MISSIONS[ks.m].ym; kp.proof = MISSIONS[ks.m].log;
+      kp.u = ks.u; kp.ly = ks.ly; kp.lz = ks.lz; kp.partLabel = ks.partLabel;
+      kp.glyph = "김"; kp.threshold = 0; kp.featured = true;
+    }
+
+    var leeSpots = [
+      { idx: 55,  m: 1, cheer: "사랑하는 딸 지민이 입학 축하해", u: 0.19, ly: -0.36, lz: 0.56, partLabel: "숨구멍 부근" },
+      { idx: 420, m: 5, cheer: "태화강처럼 푸른 꿈을 꾸기를",   u: 0.66, ly: -0.36, lz: 0.45, partLabel: "귀신고래 등융기" },
+      { idx: 610, m: 10, cheer: "따뜻한 김장김치 맛있게 드세요", u: 0.82, ly: 0.06,  lz: 0.35, partLabel: "미병부(꼬리목)" }
+    ];
+    for (var li = 0; li < leeSpots.length; li++) {
+      var ls = leeSpots[li];
+      var lp = whaleParticles[ls.idx % whaleParticles.length];
+      lp.name = "이성남"; lp.cheer = ls.cheer; lp.ym = MISSIONS[ls.m].ym; lp.proof = MISSIONS[ls.m].log;
+      lp.u = ls.u; lp.ly = ls.ly; lp.lz = ls.lz; lp.partLabel = ls.partLabel;
+      lp.glyph = "이"; lp.threshold = 0; lp.featured = true;
+    }
+
+    // 5. Companion Salmon School
+    for (s = 0; s < 72; s++) {
+      var isPark = (s === 4 || s === 19 || s === 38 || s === 57);
+      var ms = s % 12;
+      salmonSchool.push({
+        id: 5000 + s,
+        type: "VOLUNTEER",
+        baseU: -0.06 + (s / 72) * 1.16,
+        laneY: (s % 2 === 0 ? -1 : 1) * (0.78 + (s % 5) * 0.14),
+        speedOffset: 0.6 + (s % 7) * 0.09,
+        phase: s * 0.7,
+        featured: isPark,
+        ox: 0, oy: 0, vx: 0, vy: 0,
+        name: isPark ? "박학성" : SAMPLE_NAMES[(s + 3) % SAMPLE_NAMES.length],
+        cheer: isPark ? "청소년 봉사단 할머니 또 올게요!" : "중구 한글연어 봉사단 함께해요",
+        ym: MISSIONS[ms].ym,
+        proof: MISSIONS[ms].log,
+        glyph: isPark ? "박" : HANGUL_STREAM[(s * 5) % HANGUL_STREAM.length],
+        partLabel: "태화강 한글연어 봉사단",
+        threshold: (s / 72) * 100
+      });
+    }
+  }
+  buildGiantWhaleDataset();
+
+  var fillPct = 100;
+  var selectedPerson = "김울산";
+
+  function getWhaleMetrics() {
+    var drawerEl = document.getElementById("rightDrawer");
+    var isCollapsed = drawerEl.className.indexOf("collapsed") !== -1;
+    var isKiosk = document.body.className.indexOf("kiosk-mode") !== -1;
+
+    if (isMobile) {
+      // On smartphone portrait/landscape: span 90% of screen width centered!
+      var mLen = Math.min(W * 0.90, 740);
+      var mCenterY = (!isCollapsed && !isKiosk && H > W) ? (H * 0.37) : (H * 0.49);
+      return {
+        whaleLen: mLen,
+        whaleAmpY: mLen * 0.165,
+        baseLeftX: (W - mLen) * 0.5,
+        baseCenterY: mCenterY
+      };
+    } else {
+      var dOffset = (isCollapsed || isKiosk) ? 0 : -110;
+      var dLen = Math.min(W * 0.72, 1280);
+      return {
+        whaleLen: dLen,
+        whaleAmpY: dLen * 0.152,
+        baseLeftX: (W - dLen) * 0.5 + dOffset,
+        baseCenterY: H * 0.50
+      };
+    }
+  }
+
+  function triggerInkSpout(customStr) {
+    var str = customStr || "사랑희망온기태화강한글고래울산중구";
+    var m = getWhaleMetrics();
+    var startX = m.baseLeftX + 0.18 * m.whaleLen;
+    var startY = m.baseCenterY - m.whaleAmpY * 0.45;
+    var count = isMobile ? 14 : 22;
+    for (var i = 0; i < count; i++) {
+      inkSpouts.push({
+        x: startX + (Math.random() - 0.5) * 14,
+        y: startY,
+        vx: (Math.random() - 0.38) * (isMobile ? 60 : 88),
+        vy: -(isMobile ? 80 : 115) - Math.random() * 95,
+        life: 0,
+        maxLife: 1.7 + Math.random() * 0.8,
+        ch: str.charAt(i % str.length)
       });
     }
   }
 
-  // 2. Compact Paddle-Shaped Pectoral Flippers (한국계 귀신고래 고유의 단정한 노 모양 가슴지느러미)
-  for (let f = 0; f < 115; f++) {
-    const fg = (f < 82);
-    const t = Math.pow((f % 82) / 82, 0.82);
-    const paddleHalfW = Math.sin(t * Math.PI) * 0.12 + (1 - t) * 0.04;
-    const offW = (Math.random() - 0.5) * 2 * paddleHalfW;
-    let u = 0.275 + t * 0.145 + offW * 0.28;
-    let localY = 0.34 + t * 0.46 + offW * 0.65;
-    if (!fg) { u -= 0.02; localY = localY * 0.80 - 0.08; }
-    const localZ = fg ? (0.68 + t * 0.22) : (-0.58 - t * 0.18);
-    const mIdx = idCounter % 12;
+  function renderDrawer() {
+    var list = document.getElementById("logList");
+    var title = document.getElementById("drawerTitle");
+    list.innerHTML = "";
 
-    whaleParticles.push({
-      id: idCounter++,
-      type: "DONOR",
-      u, ly: localY, lz: localZ, mottle: Math.sin(u * 40 + localY * 20),
-      partLabel: fg ? "노형 가슴지느러미" : "안쪽 가슴지느러미",
-      isGroove: false,
-      ox: 0, oy: 0, vx: 0, vy: 0,
-      name: SAMPLE_NAMES[idCounter % SAMPLE_NAMES.length],
-      cheer: SAMPLE_CHEERS[idCounter % SAMPLE_CHEERS.length],
-      ym: MISSIONS[mIdx].ym,
-      proof: MISSIONS[mIdx].log,
-      glyph: HANGUL_STREAM[idCounter % HANGUL_STREAM.length],
-      threshold: ((idCounter * 29) % 100)
-    });
-  }
-
-  // 3. Broad S-Curved Tail Fluke with Central Notch (귀신고래 수평 꼬리지느러미)
-  for (let k = 0; k < 140; k++) {
-    const lobe = (k % 2 === 0) ? -1 : 1;
-    const span = Math.pow(Math.random(), 0.72);
-    const chordW = (1 - span * 0.72) * 0.048 * Math.sin(span * Math.PI * 0.85 + 0.15);
-    const cPos = Math.random();
-    const leadU = 0.905 + Math.pow(span, 1.25) * 0.105;
-    const trailU = 0.968 + Math.pow(span, 1.1) * 0.062 - (1 - span) * 0.015;
-    const u = leadU + cPos * (trailU - leadU);
-    const localY = lobe * (span * (lobe < 0 ? 0.46 : 0.38)) + (Math.random() - 0.5) * chordW;
-    const localZ = lobe * span * 0.32;
-    const mIdx = idCounter % 12;
-
-    whaleParticles.push({
-      id: idCounter++,
-      type: "DONOR",
-      u, ly: localY, lz: localZ, mottle: 0.25,
-      partLabel: "수평 꼬리지느러미",
-      isGroove: false,
-      ox: 0, oy: 0, vx: 0, vy: 0,
-      name: SAMPLE_NAMES[idCounter % SAMPLE_NAMES.length],
-      cheer: SAMPLE_CHEERS[idCounter % SAMPLE_CHEERS.length],
-      ym: MISSIONS[mIdx].ym,
-      proof: MISSIONS[mIdx].log,
-      glyph: HANGUL_STREAM[idCounter % HANGUL_STREAM.length],
-      threshold: ((idCounter * 43) % 100)
-    });
-  }
-
-  // 4. Calm Whale Eye right behind mouth corner (u=0.205, ly=0.17)
-  whaleParticles[8] = Object.assign(whaleParticles[8], {
-    u: 0.205, ly: 0.17, lz: 0.75, partLabel: "고래의 눈동자", glyph: "빛", threshold: 0
-  });
-
-  // Featured Multi-Donor Personas ("김울산" 5 spots on Korean Gray Whale)
-  const kimSpots = [
-    { idx: 22,  m: 0, cheer: "우리 아들 힘내라! 새해 복 많이", u: 0.11, ly: -0.22, lz: 0.58, partLabel: "주둥이 상단" },
-    { idx: 180, m: 2, cheer: "어머니 늘 건강하세요 사랑합니다", u: 0.29, ly: 0.34,  lz: 0.65, partLabel: "턱밑 주름결" },
-    { idx: 350, m: 4, cheer: "울산 중구 고향 친구들 화이팅!", u: 0.49, ly: -0.32, lz: 0.58, partLabel: "등줄기 중앙" },
-    { idx: 720, m: 7, cheer: "아이들이 배고프지 않기를 바라며", u: 0.37, ly: 0.64,  lz: 0.78, partLabel: "노형 가슴지느러미" },
-    { idx: 880, m: 9, cheer: "외솔의 고장 중구 자랑스러워요", u: 0.98, ly: -0.32, lz: 0.28, partLabel: "꼬리지느러미" }
-  ];
-  kimSpots.forEach(s => Object.assign(whaleParticles[s.idx % whaleParticles.length], {
-    name: "김울산", cheer: s.cheer, ym: MISSIONS[s.m].ym, proof: MISSIONS[s.m].log,
-    u: s.u, ly: s.ly, lz: s.lz, partLabel: s.partLabel, glyph: "김", threshold: 0
-  }));
-
-  const leeSpots = [
-    { idx: 55,  m: 1, cheer: "사랑하는 딸 지민이 입학 축하해", u: 0.19, ly: -0.36, lz: 0.56, partLabel: "숨구멍 부근" },
-    { idx: 420, m: 5, cheer: "태화강처럼 푸른 꿈을 꾸기를",   u: 0.66, ly: -0.36, lz: 0.45, partLabel: "귀신고래 등융기" },
-    { idx: 610, m: 10, cheer: "따뜻한 김장김치 맛있게 드세요", u: 0.82, ly: 0.06,  lz: 0.35, partLabel: "미병부(꼬리목)" }
-  ];
-  leeSpots.forEach(s => Object.assign(whaleParticles[s.idx % whaleParticles.length], {
-    name: "이성남", cheer: s.cheer, ym: MISSIONS[s.m].ym, proof: MISSIONS[s.m].log,
-    u: s.u, ly: s.ly, lz: s.lz, partLabel: s.partLabel, glyph: "이", threshold: 0
-  }));
-
-  // 5. Companion Hangul Salmon School (중구 청소년·구민 자원봉사 데이터 75마리)
-  for (let s = 0; s < 75; s++) {
-    const isPark = (s === 4 || s === 19 || s === 38 || s === 57);
-    const mIdx = s % 12;
-    salmonSchool.push({
-      id: 5000 + s,
-      type: "VOLUNTEER",
-      baseU: -0.06 + (s / 75) * 1.16,
-      laneY: (s % 2 === 0 ? -1 : 1) * (0.78 + (s % 5) * 0.14),
-      speedOffset: 0.6 + (s % 7) * 0.09,
-      phase: s * 0.7,
-      ox: 0, oy: 0, vx: 0, vy: 0,
-      name: isPark ? "박학성" : SAMPLE_NAMES[(s + 3) % SAMPLE_NAMES.length],
-      cheer: isPark ? "청소년 봉사단 할머니 또 올게요!" : "중구 한글연어 봉사단 함께해요",
-      ym: MISSIONS[mIdx].ym,
-      proof: MISSIONS[mIdx].log,
-      glyph: isPark ? "박" : HANGUL_STREAM[(s * 5) % HANGUL_STREAM.length],
-      partLabel: "태화강 한글연어 봉사단",
-      threshold: (s / 75) * 100
-    });
-  }
-}
-buildGiantWhaleDataset();
-
-let fillPct = 100;
-let selectedPerson = "김울산";
-
-function triggerInkSpout(customStr = "사랑희망온기태화강한글고래울산중구") {
-  // Spout from blowhole (around u=0.18, top of head)
-  const whaleLen = Math.min(W * 0.70, 1180);
-  const startX = (W - whaleLen) * 0.46 + 0.18 * whaleLen;
-  const startY = H * 0.49 - whaleLen * 0.13;
-  for (let i = 0; i < 24; i++) {
-    inkSpouts.push({
-      x: startX + (Math.random() - 0.5) * 18,
-      y: startY,
-      vx: (Math.random() - 0.35) * 90,
-      vy: -115 - Math.random() * 125,
-      life: 0,
-      maxLife: 1.8 + Math.random() * 0.9,
-      ch: customStr[i % customStr.length]
-    });
-  }
-}
-
-function renderDrawer() {
-  const list = document.getElementById("logList");
-  const title = document.getElementById("drawerTitle");
-  list.innerHTML = "";
-
-  const all = [...whaleParticles, ...salmonSchool].filter(p => p.threshold <= fillPct);
-  let items;
-  if (selectedPerson) {
-    items = all.filter(p => p.name === selectedPerson);
-    title.textContent = `‘${selectedPerson}’ 님 실증 분포 (${items.length}곳)`;
-  } else {
-    items = all.slice(-12).reverse();
-    title.textContent = "최근 등재된 응원 한글 실증기록";
-  }
-
-  if (items.length === 0) {
-    list.innerHTML = `<div style="padding:16px;font-size:12px;color:#647d94;text-align:center;">일치하는 참여 기록이 없습니다.</div>`;
-    return;
-  }
-
-  items.forEach(it => {
-    const div = document.createElement("div");
-    div.className = "log-item" + (it.type === "VOLUNTEER" ? " salmon" : "") + (selectedPerson ? " highlighted" : "");
-    div.innerHTML = `
-      <div class="li-top">
-        <span>${it.name} <small style="font-weight:600;color:#647d94;">· ${it.partLabel}</small></span>
-        <span class="li-ym">${it.ym}</span>
-      </div>
-      <div class="li-cheer">“${it.cheer}”</div>
-      <div class="li-proof">[실증] ${it.proof}</div>
-    `;
-    div.onclick = () => selectPerson(it.name);
-    list.appendChild(div);
-  });
-}
-
-function updateKPI() {
-  const cnt = whaleParticles.filter(p => p.threshold <= fillPct).length +
-              salmonSchool.filter(p => p.threshold <= fillPct).length;
-  document.getElementById("kpiCount").textContent = (cnt + 165).toLocaleString() + " 개";
-}
-
-function setFill(val, btn) {
-  fillPct = val;
-  if (btn) {
-    btn.parentElement.querySelectorAll(".chip-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-  }
-  updateKPI();
-  renderDrawer();
-}
-
-function selectPerson(name, btn) {
-  selectedPerson = name || null;
-  document.querySelectorAll(".dock-group:nth-child(2) .chip-btn").forEach(b => b.classList.remove("active"));
-  if (btn) btn.classList.add("active");
-  if (name) openDrawerIfClosed();
-  renderDrawer();
-}
-
-function manualSearch() {
-  const v = document.getElementById("qName").value.trim();
-  selectPerson(v || null);
-}
-
-function toggleDrawer() {
-  document.getElementById("rightDrawer").classList.toggle("collapsed");
-}
-function openDrawerIfClosed() {
-  document.getElementById("rightDrawer").classList.remove("collapsed");
-}
-
-function openWriteModal() { document.getElementById("writeModal").style.display = "flex"; }
-function closeWriteModal() { document.getElementById("writeModal").style.display = "none"; }
-
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.style.display = "block";
-  clearTimeout(window._tt);
-  window._tt = setTimeout(() => { t.style.display = "none"; }, 3400);
-}
-
-function submitNewParticle() {
-  const name = document.getElementById("inName").value.trim() || "익명기부자";
-  const type = document.getElementById("inType").value;
-  const cheer = document.getElementById("inCheer").value.trim() || "울산 중구 응원합니다!";
-  const mIdx = Number(document.getElementById("inMonth").value);
-  const m = MISSIONS[mIdx];
-
-  if (type === "DONOR") {
-    const u = 0.16 + Math.random() * 0.56;
-    const sil = getWhaleSilhouette(u);
-    const ly = (Math.random() - 0.45) * sil.botY * 0.85;
-    const newP = {
-      id: Date.now(), type: "DONOR",
-      u, ly, lz: 0.72, partLabel: "몸통 중앙(신규등재)",
-      isGroove: false, ox: 0, oy: 0, vx: 0, vy: 0,
-      name, cheer, ym: m.ym, proof: m.log, glyph: name[0], threshold: 0
-    };
-    whaleParticles.push(newP);
-    flyingDrops.push({ target: newP, p: 0, sx: W * 0.5, sy: H * 0.88 });
-  } else {
-    salmonSchool.push({
-      id: Date.now(), type: "VOLUNTEER",
-      baseU: 0.35 + Math.random() * 0.3, laneY: -0.88, speedOffset: 0.8, phase: Math.random() * 6,
-      ox: 0, oy: 0, vx: 0, vy: 0,
-      name, cheer, ym: m.ym, proof: m.log, glyph: name[0],
-      partLabel: "태화강 한글연어 봉사단", threshold: 0
-    });
-  }
-
-  document.getElementById("kioskTicker").textContent =
-    `${name} 님 · “${cheer}” ── [${m.ym} 실증완료] ${m.log}`;
-
-  closeWriteModal();
-  triggerInkSpout(cheer.replace(/\s+/g, "") || name);
-  selectPerson(name);
-  updateKPI();
-  showToast(`✦ 순백의 수면 위 ‘${name}’ 님의 응원 한글과 [${m.log}] 기록이 새겨졌습니다!`);
-}
-
-function setMode(mode, btn) {
-  document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  document.body.classList.toggle("kiosk-mode", mode === "kiosk");
-  document.getElementById("budgetOverlay").style.display = (mode === "budget") ? "block" : "none";
-  if (mode === "kiosk") triggerInkSpout();
-}
-
-function setVenue(idx, btn) {
-  btn.parentElement.querySelectorAll(".chip-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  document.getElementById("venueSub").textContent = VENUES[idx];
-}
-
-// Kiosk Live Ticker
-let tk = 0;
-setInterval(() => {
-  if (!document.body.classList.contains("kiosk-mode")) return;
-  tk = (tk + 1) % whaleParticles.length;
-  const p = whaleParticles[tk];
-  document.getElementById("kioskTicker").textContent =
-    `${p.name} 님 · “${p.cheer}” ── [${p.ym} 실증완료] ${p.proof}`;
-}, 4000);
-
-setInterval(() => { if (fillPct >= 50) triggerInkSpout(); }, 8000);
-
-/*
-  Main 60fps Loop:
-  3D Volumetric Whale Data -> Projected onto Pure White 2D Canvas with Mouse Fluid Physics!
-*/
-let prevNow = performance.now();
-let startNow = prevNow;
-
-function animate(now) {
-  const dt = Math.min(0.05, (now - prevNow) * 0.001);
-  prevNow = now;
-  const t = (now - startNow) * 0.001;
-
-  // Smooth mouse tracking for gentle 3D-to-2D roll/pitch tilt & whale attention!
-  const targetMX = (mouseX > 0) ? mouseX : W * 0.45;
-  const targetMY = (mouseY > 0) ? mouseY : H * 0.50;
-  smoothMX += (targetMX - smoothMX) * 0.045;
-  smoothMY += (targetMY - smoothMY) * 0.045;
-
-  // Subtle 3D roll angle driven by mouse vertical position (-0.24 .. +0.24 rad) -> 3차원 데이터의 2차원 입체감!
-  const rollAngle = ((smoothMY / H) - 0.5) * 0.42 + Math.sin(t * 0.55) * 0.08;
-  const cosR = Math.cos(rollAngle), sinR = Math.sin(rollAngle);
-
-  // Giant Whale Scale (spans ~68% of viewport width so it looks TRULY MASSIVE & MAJESTIC!)
-  const drawerOffset = document.getElementById("rightDrawer").classList.contains("collapsed") ||
-                       document.body.classList.contains("kiosk-mode") ? 0 : -115;
-  const whaleLen = Math.min(W * 0.72, 1280);
-  const whaleAmpY = whaleLen * 0.152;
-  const baseLeftX = (W - whaleLen) * 0.5 + drawerOffset + Math.sin(t * 0.35) * 18;
-  const baseCenterY = H * 0.50 + ((smoothMY - H * 0.5) * 0.06);
-
-  ctx.fillStyle = "#fbfcfe";
-  ctx.fillRect(0, 0, W, H);
-
-  // Subtle calligraphic water current lines across the white paper canvas
-  ctx.save();
-  ctx.lineWidth = 1;
-  for (let w = 0; w < 5; w++) {
-    ctx.strokeStyle = `rgba(18, 78, 128, ${0.035 + w * 0.008})`;
-    ctx.beginPath();
-    const wy0 = H * (0.28 + w * 0.11);
-    for (let x = 0; x <= W; x += 40) {
-      const wy = wy0 + Math.sin(x * 0.004 + t * 0.8 + w * 1.4) * 18;
-      if (x === 0) ctx.moveTo(x, wy);
-      else ctx.lineTo(x, wy);
+    var all = [];
+    var i;
+    for (i = 0; i < whaleParticles.length; i++) {
+      if (whaleParticles[i].threshold <= fillPct) all.push(whaleParticles[i]);
     }
-    ctx.stroke();
-  }
-  ctx.restore();
+    for (i = 0; i < salmonSchool.length; i++) {
+      if (salmonSchool[i].threshold <= fillPct) all.push(salmonSchool[i]);
+    }
 
-  // Draw expanding mouse water ripples on white background
-  for (let r = ripples.length - 1; r >= 0; r--) {
-    const rp = ripples[r];
-    rp.r += 135 * dt;
-    rp.alpha *= 0.955;
-    ctx.beginPath();
-    ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
-    ctx.strokeStyle = `rgba(0, 119, 182, ${rp.alpha})`;
-    ctx.lineWidth = 1.3;
-    ctx.stroke();
-    if (rp.r > rp.maxR || rp.alpha < 0.01) ripples.splice(r, 1);
-  }
-
-  // Subtle dorsal/ventral ink silhouette guide when fillPct is low (1월 윤곽 단계)
-  if (fillPct < 65) {
-    const guideAlpha = (1 - fillPct / 75) * 0.22;
-    ctx.strokeStyle = `rgba(15, 65, 115, ${guideAlpha})`;
-    ctx.lineWidth = 1.5;
-    [-1, 1].forEach(sign => {
-      ctx.beginPath();
-      for (let s = 0; s <= 50; s++) {
-        const u = s / 50;
-        const sil = getWhaleSilhouette(u);
-        const spineWave = Math.sin(t * 2.0 - u * 4.8) * (6 + u * u * 38);
-        const px = baseLeftX + u * whaleLen;
-        const py = baseCenterY + spineWave + (sign < 0 ? -sil.topY : sil.botY) * whaleAmpY;
-        if (s === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
+    var items = [];
+    if (selectedPerson) {
+      for (i = 0; i < all.length; i++) {
+        if (all[i].name === selectedPerson) items.push(all[i]);
       }
-      ctx.stroke();
-    });
-  }
-
-  const drawList = [];
-  const starPts = [];
-
-  // Project 3D Whale Data onto 2D Plane + Apply Mouse Fluid Spring Repulsion/Magnification
-  for (let i = 0; i < whaleParticles.length; i++) {
-    const p = whaleParticles[i];
-    if (p.threshold > fillPct) continue;
-
-    // Natural undulation wave propagating from head (u=0) to tail fluke (u=1)
-    const spineWave = Math.sin(t * 2.05 - p.u * 4.7) * (5 + p.u * p.u * 42);
-    const swayX = Math.cos(t * 1.02 - p.u * 2.4) * (p.u * 8);
-
-    // 3D rotation around whale's longitudinal U-axis (3차원 볼륨의 2차원 투사!)
-    const rotY2D = p.ly * cosR - p.lz * sinR;
-    const depthZ = p.ly * sinR + p.lz * cosR; // -1 (far side) .. +1 (near side)
-
-    const targetX = baseLeftX + p.u * whaleLen + swayX;
-    const targetY = baseCenterY + spineWave + rotY2D * whaleAmpY;
-
-    // Fluid interaction with user's mouse cursor!
-    const dx = (targetX + p.ox) - mouseX;
-    const dy = (targetY + p.oy) - mouseY;
-    const distSq = dx * dx + dy * dy;
-    const interactRadius = 115;
-    let mouseBoost = 0;
-
-    if (distSq < interactRadius * interactRadius && distSq > 1) {
-      const dist = Math.sqrt(distSq);
-      const force = (1 - dist / interactRadius);
-      mouseBoost = force;
-      // Gentle swirling water displacement around cursor
-      p.vx += (dx / dist) * force * 420 * dt - (dy / dist) * force * 140 * dt;
-      p.vy += (dy / dist) * force * 420 * dt + (dx / dist) * force * 140 * dt;
-    }
-
-    // Spring-damper restoration back to living whale body
-    p.vx += (-p.ox * 14.0 - p.vx * 5.8) * dt;
-    p.vy += (-p.oy * 14.0 - p.vy * 5.8) * dt;
-    p.ox += p.vx * dt;
-    p.oy += p.vy * dt;
-
-    const sx = targetX + p.ox;
-    const sy = targetY + p.oy;
-    const isMatch = selectedPerson && (p.name === selectedPerson);
-
-    drawList.push({ p, sx, sy, depthZ, mouseBoost, isMatch, kind: "WHALE" });
-    if (isMatch) starPts.push({ p, sx, sy });
-  }
-
-  // Project Companion Hangul Salmon School (봉사자 데이터)
-  for (let i = 0; i < salmonSchool.length; i++) {
-    const s = salmonSchool[i];
-    if (s.threshold > fillPct) continue;
-
-    // Swim leftward alongside the giant whale, wrapping smoothly
-    let uWrap = (s.baseU - t * 0.045 * s.speedOffset) % 1.24;
-    if (uWrap < -0.12) uWrap += 1.24;
-
-    const sxBase = baseLeftX + uWrap * whaleLen;
-    const syBase = baseCenterY + s.laneY * whaleAmpY + Math.sin(t * 2.8 + s.phase) * 14;
-
-    // Subtle attraction/ripple toward mouse
-    const dx = (sxBase + s.ox) - mouseX;
-    const dy = (syBase + s.oy) - mouseY;
-    const d = Math.sqrt(dx * dx + dy * dy);
-    let mouseBoost = 0;
-    if (d < 110 && d > 1) {
-      mouseBoost = 1 - d / 110;
-      s.vx += (dx / d) * mouseBoost * 260 * dt;
-      s.vy += (dy / d) * mouseBoost * 260 * dt;
-    }
-    s.vx += (-s.ox * 10 - s.vx * 5) * dt;
-    s.vy += (-s.oy * 10 - s.vy * 5) * dt;
-    s.ox += s.vx * dt;
-    s.oy += s.vy * dt;
-
-    const sx = sxBase + s.ox;
-    const sy = syBase + s.oy;
-    const isMatch = selectedPerson && (s.name === selectedPerson);
-    drawList.push({ p: s, sx, sy, depthZ: 0.4, mouseBoost, isMatch, kind: "SALMON" });
-    if (isMatch) starPts.push({ p: s, sx, sy });
-  }
-
-  // Sort back-to-front by 3D depthZ so foreground fin & near-belly overlap background cleanly!
-  drawList.sort((a, b) => a.depthZ - b.depthZ);
-
-  let bestHover = null, bestDist = 22;
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-
-  for (let i = 0; i < drawList.length; i++) {
-    const item = drawList[i];
-    const { p, sx, sy, depthZ, mouseBoost, isMatch, kind } = item;
-
-    const md = Math.hypot(sx - mouseX, sy - mouseY);
-    if (md < bestDist) { bestDist = md; bestHover = item; }
-
-    // Eye highlight
-    if (p.partLabel === "고래의 눈동자") {
-      ctx.beginPath();
-      ctx.arc(sx, sy, 6.5, 0, Math.PI * 2);
-      ctx.fillStyle = "#0b2239";
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(sx - 2, sy - 2, 2.2, 0, Math.PI * 2);
-      ctx.fillStyle = "#ffffff";
-      ctx.fill();
-      continue;
-    }
-
-    if (isMatch) {
-      // Vermilion Seal Stamp (한국적 주홍 낙관 + 별자리 포인트!)
-      const pulse = 15 + Math.sin(t * 4.5 + p.id) * 3;
-      ctx.beginPath();
-      ctx.arc(sx, sy, pulse, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(217, 72, 15, 0.12)";
-      ctx.fill();
-      ctx.strokeStyle = "#d9480f";
-      ctx.lineWidth = 1.8;
-      ctx.stroke();
-
-      ctx.font = "900 13.5px 'Malgun Gothic', sans-serif";
-      ctx.fillStyle = "#c92a2a";
-      ctx.fillText(`${p.name} · ${p.ym}`, sx, sy - 16);
-      ctx.font = "800 11.5px 'Malgun Gothic', sans-serif";
-      ctx.fillStyle = "#0b2239";
-      ctx.fillText(`“${p.cheer.slice(0, 13)}”`, sx, sy + 2);
-      continue;
-    }
-
-    // 3D Depth-Driven Sumuk/Indigo Ink Density (농담) on White Paper!
-    const depthNorm = Math.max(0, Math.min(1, (depthZ + 0.85) / 1.75)); // 0 (far back) .. 1 (front surface)
-    const dimFactor = selectedPerson ? 0.36 : 1.0;
-
-    if (kind === "SALMON") {
-      const fSize = Math.round(11 + mouseBoost * 5);
-      ctx.font = `800 ${fSize}px 'Malgun Gothic', sans-serif`;
-      ctx.fillStyle = `rgba(12, 150, 110, ${(0.68 + mouseBoost * 0.32) * dimFactor})`;
-      ctx.fillText(mouseBoost > 0.35 ? p.name : p.glyph, sx, sy);
+      title.textContent = "‘" + selectedPerson + "’ 님 실증 분포 (" + items.length + "곳)";
     } else {
-      const baseSize = 9.5 + depthNorm * 5.2 + mouseBoost * 7.5;
-      ctx.font = `${depthNorm > 0.55 || mouseBoost > 0.2 ? 800 : 600} ${Math.round(baseSize)}px 'Malgun Gothic', sans-serif`;
+      var start = Math.max(0, all.length - 12);
+      for (i = all.length - 1; i >= start; i--) items.push(all[i]);
+      title.textContent = "최근 등재된 응원 한글 실증기록";
+    }
 
-      // Authentic Korean Gray Whale Charcoal-Slate & Silver-Barnacle Mottled Sumuk Palette!
-      let rCol, gCol, bCol, alpha;
-      if (mouseBoost > 0.15) {
-        rCol = 0; gCol = 98; bCol = 168;
-        alpha = 0.96;
-      } else if (depthNorm > 0.56) {
-        if ((p.mottle || 0) > 0.65) {
-          rCol = 96; gCol = 114; bCol = 132; // 귀신고래 고유 회백색 따개비·수묵 반점
-          alpha = 0.86 * dimFactor;
-        } else {
-          rCol = 20; gCol = 32; bCol = 46;    // 동해 수묵 흑회색 본체
-          alpha = (0.68 + depthNorm * 0.30) * dimFactor;
-        }
-      } else {
-        rCol = 88; gCol = 108; bCol = 128;    // 원경 담묵색 볼륨
-        alpha = (0.22 + depthNorm * 0.42) * dimFactor;
-      }
-      ctx.fillStyle = `rgba(${rCol}, ${gCol}, ${bCol}, ${alpha})`;
+    if (items.length === 0) {
+      list.innerHTML = '<div style="padding:14px;font-size:12px;color:#647d94;text-align:center;">일치하는 참여 기록이 없습니다.</div>';
+      return;
+    }
 
-      // When mouse ripples near a particle, reveal full donor name or cheer snippet right on the skin!
-      let txt = p.glyph;
-      if (mouseBoost > 0.52) txt = `${p.name} “${p.cheer.slice(0, 8)}”`;
-      else if (mouseBoost > 0.24 || (p.isGroove && p.id % 9 === 0 && depthNorm > 0.65)) txt = p.name;
-
-      ctx.fillText(txt, sx, sy);
+    for (i = 0; i < items.length; i++) {
+      (function(it) {
+        var div = document.createElement("div");
+        div.className = "log-item" + (it.type === "VOLUNTEER" ? " salmon" : "") + (selectedPerson ? " highlighted" : "");
+        div.innerHTML =
+          '<div class="li-top">' +
+            '<span>' + it.name + ' <small style="font-weight:600;color:#647d94;">· ' + it.partLabel + '</small></span>' +
+            '<span class="li-ym">' + it.ym + '</span>' +
+          '</div>' +
+          '<div class="li-cheer">“' + it.cheer + '”</div>' +
+          '<div class="li-proof">[실증] ' + it.proof + '</div>';
+        div.onclick = function() { window.selectPerson(it.name); };
+        list.appendChild(div);
+      })(items[i]);
     }
   }
 
-  // Fine Calligraphic Constellation Lines for Multi-Participation Person
-  if (starPts.length > 1) {
+  function updateKPI() {
+    var cnt = 0, i;
+    for (i = 0; i < whaleParticles.length; i++) if (whaleParticles[i].threshold <= fillPct) cnt++;
+    for (i = 0; i < salmonSchool.length; i++) if (salmonSchool[i].threshold <= fillPct) cnt++;
+    document.getElementById("kpiCount").textContent = (cnt + 165).toLocaleString() + " 개";
+  }
+
+  // Expose UI Handlers Globally
+  window.setFill = function(val, btn) {
+    fillPct = val;
+    if (btn) {
+      eachNode(".chip-btn", function(b) { b.classList.remove("active"); }, document.getElementById("fillGroup"));
+      btn.classList.add("active");
+    }
+    updateKPI();
+    renderDrawer();
+  };
+
+  window.selectPerson = function(name, btn) {
+    selectedPerson = name || null;
+    eachNode(".chip-btn", function(b) { b.classList.remove("active"); }, document.getElementById("personGroup"));
+    if (btn) btn.classList.add("active");
+    if (name && !isMobile) {
+      document.getElementById("rightDrawer").classList.remove("collapsed");
+    }
+    renderDrawer();
+  };
+
+  window.manualSearch = function() {
+    var v = document.getElementById("qName").value.replace(/^\s+|\s+$/g, "");
+    window.selectPerson(v || null);
+    if (v) document.getElementById("rightDrawer").classList.remove("collapsed");
+  };
+
+  window.toggleDrawer = function() {
+    var dr = document.getElementById("rightDrawer");
+    if (dr.className.indexOf("collapsed") !== -1) dr.classList.remove("collapsed");
+    else dr.classList.add("collapsed");
+  };
+
+  window.openWriteModal = function() { document.getElementById("writeModal").style.display = "flex"; };
+  window.closeWriteModal = function() { document.getElementById("writeModal").style.display = "none"; };
+
+  window.showToast = function(msg) {
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.style.display = "block";
+    clearTimeout(window._tt);
+    window._tt = setTimeout(function() { t.style.display = "none"; }, 3200);
+  };
+
+  window.submitNewParticle = function() {
+    var name = document.getElementById("inName").value.replace(/^\s+|\s+$/g, "") || "익명기부자";
+    var type = document.getElementById("inType").value;
+    var cheer = document.getElementById("inCheer").value.replace(/^\s+|\s+$/g, "") || "울산 중구 응원합니다!";
+    var mIdx = Number(document.getElementById("inMonth").value);
+    var m = MISSIONS[mIdx];
+
+    if (type === "DONOR") {
+      var u = 0.18 + Math.random() * 0.52;
+      var sil = getWhaleSilhouette(u);
+      var ly = (Math.random() - 0.45) * sil.botY * 0.82;
+      var newP = {
+        id: Date.now(), type: "DONOR",
+        u: u, ly: ly, lz: 0.72, mottle: 0, partLabel: "몸통 중앙(신규등재)",
+        isGroove: false, featured: true,
+        ox: 0, oy: 0, vx: 0, vy: 0,
+        name: name, cheer: cheer, ym: m.ym, proof: m.log, glyph: name.charAt(0), threshold: 0
+      };
+      whaleParticles.push(newP);
+      flyingDrops.push({ target: newP, p: 0, sx: W * 0.5, sy: H * 0.86 });
+    } else {
+      salmonSchool.push({
+        id: Date.now(), type: "VOLUNTEER",
+        baseU: 0.35 + Math.random() * 0.3, laneY: -0.88, speedOffset: 0.8, phase: Math.random() * 6,
+        featured: true, ox: 0, oy: 0, vx: 0, vy: 0,
+        name: name, cheer: cheer, ym: m.ym, proof: m.log, glyph: name.charAt(0),
+        partLabel: "태화강 한글연어 봉사단", threshold: 0
+      });
+    }
+
+    document.getElementById("kioskTicker").textContent =
+      name + " 님 · “" + cheer + "” ── [" + m.ym + " 실증] " + m.log;
+
+    window.closeWriteModal();
+    triggerInkSpout(cheer.replace(/\s+/g, "") || name);
+    window.selectPerson(name);
+    updateKPI();
+    window.showToast("✦ ‘" + name + "’ 님의 응원 한글이 태화강 한글고래에 새겨졌습니다!");
+  };
+
+  window.setMode = function(mode, btn) {
+    eachNode(".tab-btn", function(b) { b.classList.remove("active"); });
+    if (btn) btn.classList.add("active");
+    if (mode === "kiosk") document.body.classList.add("kiosk-mode");
+    else document.body.classList.remove("kiosk-mode");
+    document.getElementById("budgetOverlay").style.display = (mode === "budget") ? "block" : "none";
+    if (mode === "kiosk") triggerInkSpout();
+  };
+
+  window.setVenue = function(idx, btn) {
+    eachNode(".chip-btn", function(b) { b.classList.remove("active"); }, document.getElementById("venueGroup"));
+    if (btn) btn.classList.add("active");
+    document.getElementById("venueSub").textContent = VENUES[idx];
+  };
+
+  var tk = 0;
+  setInterval(function() {
+    if (document.body.className.indexOf("kiosk-mode") === -1) return;
+    tk = (tk + 1) % whaleParticles.length;
+    var p = whaleParticles[tk];
+    document.getElementById("kioskTicker").textContent =
+      p.name + " 님 · “" + p.cheer + "” ── [" + p.ym + " 실증] " + p.proof;
+  }, 4000);
+
+  setInterval(function() { if (fillPct >= 50) triggerInkSpout(); }, 8000);
+
+  // Main Animation Loop (60fps Desktop & Android 7 Optimized)
+  var prevNow = Date.now();
+  var startNow = prevNow;
+
+  function animate() {
+    var now = Date.now();
+    var dt = Math.min(0.05, (now - prevNow) * 0.001);
+    prevNow = now;
+    var t = (now - startNow) * 0.001;
+
+    var targetMX = (pointerX > 0) ? pointerX : W * 0.45;
+    var targetMY = (pointerY > 0) ? pointerY : H * 0.50;
+    smoothMX += (targetMX - smoothMX) * 0.05;
+    smoothMY += (targetMY - smoothMY) * 0.05;
+
+    var rollAngle = ((smoothMY / H) - 0.5) * 0.36 + Math.sin(t * 0.55) * 0.08;
+    var cosR = Math.cos(rollAngle), sinR = Math.sin(rollAngle);
+
+    var wm = getWhaleMetrics();
+    var whaleLen = wm.whaleLen;
+    var whaleAmpY = wm.whaleAmpY;
+    var baseLeftX = wm.baseLeftX + Math.sin(t * 0.35) * (isMobile ? 8 : 18);
+    var baseCenterY = wm.baseCenterY + ((smoothMY - H * 0.5) * (isMobile ? 0.03 : 0.06));
+
+    ctx.fillStyle = "#fbfcfe";
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle calm water lines
     ctx.save();
-    ctx.strokeStyle = "rgba(217, 72, 15, 0.62)";
-    ctx.lineWidth = 1.6;
-    ctx.setLineDash([6, 5]);
-    ctx.beginPath();
-    starPts.forEach((pt, idx) => {
-      if (idx === 0) ctx.moveTo(pt.sx, pt.sy);
-      else ctx.lineTo(pt.sx, pt.sy);
-    });
-    ctx.stroke();
+    ctx.lineWidth = 1;
+    for (var w = 0; w < 4; w++) {
+      ctx.strokeStyle = "rgba(18, 78, 128, 0.045)";
+      ctx.beginPath();
+      var wy0 = baseCenterY + (w - 1.5) * (whaleAmpY * 0.85);
+      for (var x = 0; x <= W; x += 45) {
+        var wy = wy0 + Math.sin(x * 0.006 + t * 0.8 + w * 1.4) * (isMobile ? 10 : 16);
+        if (x === 0) ctx.moveTo(x, wy);
+        else ctx.lineTo(x, wy);
+      }
+      ctx.stroke();
+    }
     ctx.restore();
+
+    // Expanding touch/mouse ripples
+    for (var r = ripples.length - 1; r >= 0; r--) {
+      var rp = ripples[r];
+      rp.r += 130 * dt;
+      rp.alpha *= 0.95;
+      ctx.beginPath();
+      ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(0, 119, 182, " + rp.alpha.toFixed(3) + ")";
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+      if (rp.r > rp.maxR || rp.alpha < 0.015) ripples.splice(r, 1);
+    }
+
+    // Low-fill outline guide
+    if (fillPct < 65) {
+      var guideAlpha = ((1 - fillPct / 75) * 0.22).toFixed(3);
+      ctx.strokeStyle = "rgba(15, 65, 115, " + guideAlpha + ")";
+      ctx.lineWidth = 1.4;
+      var signs = [-1, 1];
+      for (var sg = 0; sg < 2; sg++) {
+        var sign = signs[sg];
+        ctx.beginPath();
+        for (var s = 0; s <= 44; s++) {
+          var ug = (s / 44) * 0.92;
+          var silG = getWhaleSilhouette(ug);
+          var spG = Math.sin(t * 2.0 - ug * 4.7) * (4 + ug * ug * (whaleLen * 0.03));
+          var px = baseLeftX + ug * whaleLen;
+          var py = baseCenterY + spG + (sign < 0 ? -silG.topY : silG.botY) * whaleAmpY;
+          if (s === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+      }
+    }
+
+    var drawList = [];
+    var starPts = [];
+    var interactR = isMobile ? 72 : 115;
+    var interactRSq = interactR * interactR;
+
+    // Adaptive particle density on narrow phones so characters stay crisp & fast on Android 7!
+    var mobileSkip = (W < 520);
+    var i, p, dx, dy, distSq, dist, force, mouseBoost, sx, sy, isMatch;
+
+    for (i = 0; i < whaleParticles.length; i++) {
+      p = whaleParticles[i];
+      if (p.threshold > fillPct) continue;
+      if (mobileSkip && !p.featured && (i % 2 === 1)) continue;
+
+      var spineWave = Math.sin(t * 2.05 - p.u * 4.7) * (3 + p.u * p.u * (whaleLen * 0.032));
+      var swayX = Math.cos(t * 1.02 - p.u * 2.4) * (p.u * (isMobile ? 4 : 8));
+
+      var rotY2D = p.ly * cosR - p.lz * sinR;
+      var depthZ = p.ly * sinR + p.lz * cosR;
+
+      var targetX = baseLeftX + p.u * whaleLen + swayX;
+      var targetY = baseCenterY + spineWave + rotY2D * whaleAmpY;
+
+      dx = (targetX + p.ox) - pointerX;
+      dy = (targetY + p.oy) - pointerY;
+      distSq = dx * dx + dy * dy;
+      mouseBoost = 0;
+
+      if (distSq < interactRSq && distSq > 1) {
+        dist = Math.sqrt(distSq);
+        force = 1 - dist / interactR;
+        mouseBoost = force;
+        p.vx += (dx / dist) * force * 380 * dt - (dy / dist) * force * 120 * dt;
+        p.vy += (dy / dist) * force * 380 * dt + (dx / dist) * force * 120 * dt;
+      }
+
+      p.vx += (-p.ox * 14.0 - p.vx * 5.8) * dt;
+      p.vy += (-p.oy * 14.0 - p.vy * 5.8) * dt;
+      p.ox += p.vx * dt;
+      p.oy += p.vy * dt;
+
+      sx = targetX + p.ox;
+      sy = targetY + p.oy;
+      isMatch = Boolean(selectedPerson && p.name === selectedPerson);
+
+      drawList.push({ p: p, sx: sx, sy: sy, depthZ: depthZ, mouseBoost: mouseBoost, isMatch: isMatch, kind: "WHALE" });
+      if (isMatch) starPts.push({ p: p, sx: sx, sy: sy });
+    }
+
+    for (i = 0; i < salmonSchool.length; i++) {
+      var sal = salmonSchool[i];
+      if (sal.threshold > fillPct) continue;
+      if (mobileSkip && !sal.featured && (i % 2 === 1)) continue;
+
+      var uWrap = (sal.baseU - t * 0.045 * sal.speedOffset) % 1.24;
+      if (uWrap < -0.12) uWrap += 1.24;
+
+      var sxBase = baseLeftX + uWrap * whaleLen;
+      var syBase = baseCenterY + sal.laneY * whaleAmpY + Math.sin(t * 2.8 + sal.phase) * (isMobile ? 8 : 14);
+
+      dx = (sxBase + sal.ox) - pointerX;
+      dy = (syBase + sal.oy) - pointerY;
+      dist = Math.sqrt(dx * dx + dy * dy);
+      mouseBoost = 0;
+      if (dist < interactR && dist > 1) {
+        mouseBoost = 1 - dist / interactR;
+        sal.vx += (dx / dist) * mouseBoost * 240 * dt;
+        sal.vy += (dy / dist) * mouseBoost * 240 * dt;
+      }
+      sal.vx += (-sal.ox * 10 - sal.vx * 5) * dt;
+      sal.vy += (-sal.oy * 10 - sal.vy * 5) * dt;
+      sal.ox += sal.vx * dt;
+      sal.oy += sal.vy * dt;
+
+      sx = sxBase + sal.ox;
+      sy = syBase + sal.oy;
+      isMatch = Boolean(selectedPerson && sal.name === selectedPerson);
+      drawList.push({ p: sal, sx: sx, sy: sy, depthZ: 0.4, mouseBoost: mouseBoost, isMatch: isMatch, kind: "SALMON" });
+      if (isMatch) starPts.push({ p: sal, sx: sx, sy: sy });
+    }
+
+    drawList.sort(function(a, b) { return a.depthZ - b.depthZ; });
+
+    var bestHover = null, bestDist = isMobile ? 28 : 22;
+    var fontScale = isMobile ? Math.max(0.66, whaleLen / 620) : 1.0;
+
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    for (i = 0; i < drawList.length; i++) {
+      var item = drawList[i];
+      p = item.p; sx = item.sx; sy = item.sy;
+      var md = Math.sqrt((sx - pointerX) * (sx - pointerX) + (sy - pointerY) * (sy - pointerY));
+      if (md < bestDist) { bestDist = md; bestHover = item; }
+
+      if (p.partLabel === "고래의 눈동자") {
+        var eyeR = isMobile ? 4.2 : 6.2;
+        ctx.beginPath();
+        ctx.arc(sx, sy, eyeR, 0, Math.PI * 2);
+        ctx.fillStyle = "#0b2239";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(sx - eyeR * 0.3, sy - eyeR * 0.3, eyeR * 0.35, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff";
+        ctx.fill();
+        continue;
+      }
+
+      if (item.isMatch) {
+        var pulse = (isMobile ? 10 : 14) + Math.sin(t * 4.5 + p.id) * 2.5;
+        ctx.beginPath();
+        ctx.arc(sx, sy, pulse, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(217, 72, 15, 0.13)";
+        ctx.fill();
+        ctx.strokeStyle = "#d9480f";
+        ctx.lineWidth = 1.7;
+        ctx.stroke();
+
+        ctx.font = "800 " + Math.round(isMobile ? 10.5 : 13) + "px " + FONT_STACK;
+        ctx.fillStyle = "#c92a2a";
+        ctx.fillText(p.name + "·" + p.ym.slice(2), sx, sy - (isMobile ? 12 : 15));
+        if (!isMobile || W > 420) {
+          ctx.font = "700 11px " + FONT_STACK;
+          ctx.fillStyle = "#0b2239";
+          ctx.fillText("“" + p.cheer.slice(0, 11) + "”", sx, sy + 2);
+        }
+        continue;
+      }
+
+      var depthNorm = Math.max(0, Math.min(1, (item.depthZ + 0.85) / 1.75));
+      var dimFactor = selectedPerson ? 0.38 : 1.0;
+
+      if (item.kind === "SALMON") {
+        var sfSize = Math.max(8, Math.round((10.5 + item.mouseBoost * 4.5) * fontScale));
+        ctx.font = "800 " + sfSize + "px " + FONT_STACK;
+        ctx.fillStyle = "rgba(12, 150, 110, " + ((0.68 + item.mouseBoost * 0.32) * dimFactor).toFixed(2) + ")";
+        ctx.fillText(item.mouseBoost > 0.35 ? p.name : p.glyph, sx, sy);
+      } else {
+        var baseSize = Math.max(7.5, (9.2 + depthNorm * 5.0 + item.mouseBoost * 6.5) * fontScale);
+        ctx.font = (depthNorm > 0.55 || item.mouseBoost > 0.2 ? "800 " : "600 ") + Math.round(baseSize) + "px " + FONT_STACK;
+
+        var rCol, gCol, bCol, alpha;
+        if (item.mouseBoost > 0.15) {
+          rCol = 0; gCol = 98; bCol = 168; alpha = 0.96;
+        } else if (depthNorm > 0.56) {
+          if ((p.mottle || 0) > 0.65) {
+            rCol = 96; gCol = 114; bCol = 132; alpha = 0.86 * dimFactor;
+          } else {
+            rCol = 20; gCol = 32; bCol = 46; alpha = (0.68 + depthNorm * 0.30) * dimFactor;
+          }
+        } else {
+          rCol = 88; gCol = 108; bCol = 128; alpha = (0.22 + depthNorm * 0.42) * dimFactor;
+        }
+        ctx.fillStyle = "rgba(" + rCol + "," + gCol + "," + bCol + "," + alpha.toFixed(2) + ")";
+
+        var txt = p.glyph;
+        if (item.mouseBoost > 0.52) txt = p.name + " “" + p.cheer.slice(0, 7) + "”";
+        else if (item.mouseBoost > 0.25) txt = p.name;
+        ctx.fillText(txt, sx, sy);
+      }
+    }
+
+    // Vermilion Constellation Lines
+    if (starPts.length > 1) {
+      ctx.save();
+      ctx.strokeStyle = "rgba(217, 72, 15, 0.62)";
+      ctx.lineWidth = 1.5;
+      if (ctx.setLineDash) ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      for (i = 0; i < starPts.length; i++) {
+        if (i === 0) ctx.moveTo(starPts[i].sx, starPts[i].sy);
+        else ctx.lineTo(starPts[i].sx, starPts[i].sy);
+      }
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Blowhole Hangul Spout
+    for (i = inkSpouts.length - 1; i >= 0; i--) {
+      var sp = inkSpouts[i];
+      sp.life += dt;
+      sp.x += sp.vx * dt;
+      sp.y += sp.vy * dt;
+      sp.vy += 95 * dt;
+      var sa = Math.max(0, 1 - sp.life / sp.maxLife) * 0.85;
+      ctx.font = "800 " + (isMobile ? 11 : 13.5) + "px " + FONT_STACK;
+      ctx.fillStyle = "rgba(0, 108, 172, " + sa.toFixed(2) + ")";
+      ctx.fillText(sp.ch, sp.x, sp.y);
+      if (sp.life >= sp.maxLife) inkSpouts.splice(i, 1);
+    }
+
+    // Flying New Particle
+    for (var c = flyingDrops.length - 1; c >= 0; c--) {
+      var fd = flyingDrops[c];
+      fd.p += 0.035;
+      var tp = fd.target;
+      var tx = baseLeftX + tp.u * whaleLen;
+      var ty = baseCenterY + tp.ly * whaleAmpY;
+      var cx = fd.sx + (tx - fd.sx) * fd.p;
+      var cy = fd.sy + (ty - fd.sy) * fd.p - Math.sin(fd.p * Math.PI) * 90;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 7, 0, Math.PI * 2);
+      ctx.fillStyle = "#d9480f";
+      ctx.fill();
+      if (fd.p >= 1) flyingDrops.splice(c, 1);
+    }
+
+    // Hover / Finger-Touch Magnifier Card (Positioned above finger on touch!)
+    hoveredParticle = bestHover;
+    var hc = document.getElementById("hoverCard");
+    if (bestHover && document.getElementById("budgetOverlay").style.display !== "block") {
+      var hp = bestHover.p;
+      ctx.beginPath();
+      ctx.arc(bestHover.sx, bestHover.sy, 14, 0, Math.PI * 2);
+      ctx.strokeStyle = "#005f99";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      hc.style.display = "block";
+      var cardW = isMobile ? 224 : 248;
+      var leftPos = isTouchPointer ? (pointerX - cardW * 0.5) : (pointerX + 16);
+      leftPos = Math.max(10, Math.min(W - cardW - 10, leftPos));
+      var topPos = isTouchPointer ? (pointerY - 125) : (pointerY - 40);
+      if (topPos < 86) topPos = pointerY + 26;
+
+      hc.style.left = leftPos + "px";
+      hc.style.top = topPos + "px";
+      hc.innerHTML =
+        '<div style="display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;font-size:10.5px;font-weight:800;color:#005f99;">' +
+          '<span>' + hp.partLabel + '</span><span style="color:#d9480f;">' + hp.ym + '</span>' +
+        '</div>' +
+        '<div style="font-size:13px;font-weight:900;color:#0b2239;margin-top:2px;">' + hp.name + '</div>' +
+        '<div style="font-size:11.5px;color:#1f3a52;font-weight:700;margin:3px 0 5px 0;">“' + hp.cheer + '”</div>' +
+        '<div style="font-size:10.5px;font-weight:800;color:#0ca678;background:rgba(12,166,120,0.1);padding:4px 7px;border-radius:5px;">[실증] ' + hp.proof + '</div>';
+    } else {
+      hc.style.display = "none";
+    }
+
+    window.requestAnimationFrame(animate);
   }
 
-  // Blowhole Hangul Water Spout on White Canvas
-  for (let i = inkSpouts.length - 1; i >= 0; i--) {
-    const sp = inkSpouts[i];
-    sp.life += dt;
-    sp.x += sp.vx * dt;
-    sp.y += sp.vy * dt;
-    sp.vy += 98 * dt;
-    const a = Math.max(0, 1 - sp.life / sp.maxLife) * 0.85;
-    ctx.font = "800 13.5px 'Malgun Gothic', sans-serif";
-    ctx.fillStyle = `rgba(0, 108, 172, ${a})`;
-    ctx.fillText(sp.ch, sp.x, sp.y);
-    if (sp.life >= sp.maxLife) inkSpouts.splice(i, 1);
-  }
-
-  // Flying New Particle Animation
-  for (let c = flyingDrops.length - 1; c >= 0; c--) {
-    const fd = flyingDrops[c];
-    fd.p += 0.032;
-    const p = fd.target;
-    const tx = baseLeftX + p.u * whaleLen;
-    const ty = baseCenterY + p.ly * whaleAmpY;
-    const cx = fd.sx + (tx - fd.sx) * fd.p;
-    const cy = fd.sy + (ty - fd.sy) * fd.p - Math.sin(fd.p * Math.PI) * 110;
-    ctx.beginPath();
-    ctx.arc(cx, cy, 8, 0, Math.PI * 2);
-    ctx.fillStyle = "#d9480f";
-    ctx.fill();
-    if (fd.p >= 1) flyingDrops.splice(c, 1);
-  }
-
-  // Hover Magnifier Card
-  hoveredParticle = bestHover;
-  const hc = document.getElementById("hoverCard");
-  if (bestHover && document.getElementById("budgetOverlay").style.display !== "block") {
-    const hp = bestHover.p;
-    ctx.beginPath();
-    ctx.arc(bestHover.sx, bestHover.sy, 15, 0, Math.PI * 2);
-    ctx.strokeStyle = "#005f99";
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    hc.style.display = "block";
-    hc.style.left = Math.min(W - 285, mouseX + 18) + "px";
-    hc.style.top = Math.max(88, mouseY - 42) + "px";
-    hc.innerHTML = `
-      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:var(--indigo);">
-        <span>${hp.partLabel}</span><span style="color:var(--vermilion);">${hp.ym}</span>
-      </div>
-      <div style="font-size:14px;font-weight:900;color:var(--ink-deep);margin-top:3px;">${hp.name} <small style="font-weight:600;color:#647d94;">(클릭 시 분포 연결)</small></div>
-      <div style="font-size:12.5px;color:#1f3a52;font-weight:700;margin:4px 0 6px 0;">“${hp.cheer}”</div>
-      <div style="font-size:11px;font-weight:800;color:var(--teal);background:rgba(12,166,120,0.09);padding:4px 8px;border-radius:5px;">[실증] ${hp.proof}</div>
-    `;
-  } else {
-    hc.style.display = "none";
-  }
-
-  requestAnimationFrame(animate);
-}
-
-updateKPI();
-renderDrawer();
-setTimeout(() => triggerInkSpout(), 500);
-requestAnimationFrame(animate);
+  updateKPI();
+  renderDrawer();
+  setTimeout(function() { triggerInkSpout(); }, 500);
+  window.requestAnimationFrame(animate);
+})();
 </script>
 </body>
 </html>
